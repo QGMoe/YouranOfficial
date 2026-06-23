@@ -74,7 +74,7 @@ def main():
             data["changelogs"] = get_changelogs();
 
         template = env.get_template(f"{id}.html")
-        with open(f"dist/_____{id}.html", "w", encoding="utf-8") as f:
+        with open(f"dist/{id}.html", "w", encoding="utf-8") as f:
             f.write(template.render(**data))
         print(f"成功构建：{id}.html")
 
