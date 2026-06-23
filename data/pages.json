@@ -1,0 +1,25 @@
+[
+    {
+        "title":"悠然MC服务器",
+        "id":"index",
+        "navs":[
+            {
+                "name":"客户端下载",
+                "link":"#download",
+                "is_direct":true
+            }
+        ]
+    },
+    {
+        "title":"悠然MC服务器：服务器信息",
+        "id":"information"
+    },
+    {
+        "title":"悠然MC服务器：魔改模组",
+        "id":"mods"
+    },
+    {
+        "title":"悠然MC服务器：服务端更新日志",
+        "id":"update"
+    }
+]

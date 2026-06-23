@@ -1,0 +1,24 @@
+<!--下拉菜单核心内容-->
+<ul class="navbar-nav">
+    {% for item in nav_items %}
+        {% if item.is_direct %}
+            <li class="nav-item {{ 'active' if page.id == item.id else '' }}">
+                <a class="nav-link" href="{{ item.link }}">{{ item.name }}</a>
+            </li>
+        {% else %}
+            <li class="nav-item dropdown">
+                <a class="nav-link" href="#">{{ item.name }}</a>
+                <div class="dropdown-content">
+                    <ul class="navbar-nav">
+                    {% for child in item.children %}
+                        <li class="nav-item {{ 'active' if page.id == item.id else '' }}">
+                            <a{% if child.outlink %} target="_blank"{% endif %} class="nav-link"
+                            href="{{ child.link }}">{{ child.name }}</a>
+                        </li>
+                    {% endfor %}
+                    </ul>
+                </div>
+            </li>
+        {% endif %}
+    {% endfor %}
+</ul>
