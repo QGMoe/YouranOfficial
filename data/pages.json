@@ -12,7 +12,10 @@
     },
     {
         "title":"悠然MC服务器：服务器信息",
-        "id":"information"
+        "id":"information",
+        "ext":[
+            "mod_list"
+        ]
     },
     {
         "title":"悠然MC服务器：魔改模组",

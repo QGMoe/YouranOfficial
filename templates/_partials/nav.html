@@ -11,7 +11,7 @@
                 <div class="dropdown-content">
                     <ul class="navbar-nav">
                     {% for child in item.children %}
-                        <li class="nav-item {{ 'active' if page.id == item.id else '' }}">
+                        <li class="nav-item {{ 'active' if page.id == child.id else '' }}">
                             <a{% if child.outlink %} target="_blank"{% endif %} class="nav-link"
                             href="{{ child.link }}">{{ child.name }}</a>
                         </li>

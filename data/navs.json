@@ -12,7 +12,7 @@
         "is_direct":true
     },
     {
-        "id":"infomation",
+        "id":"information",
         "name":"服务器信息",
         "link":"/information.html",
         "is_direct":true

@@ -15,6 +15,11 @@ for page in env.globals["pages"]:
 
     data = {"page":page,"nav_items":navs}
 
+    if "ext" in page:
+        for ext in page["ext"]:
+            with open(f"data/{ext}.json",encoding="utf-8") as f:
+                data[ext] = json.load(f)
+
     template = env.get_template(f"{id}.html")
     with open(f"dist/{id}.html", "w", encoding="utf-8") as f:
         f.write(template.render(**data))
