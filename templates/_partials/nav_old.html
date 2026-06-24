@@ -1,9 +1,9 @@
-<ul>
+<ul class="nav-bar">
     {% for item in nav_items %}
         {% if item.is_direct %}
-            <li><a {% if page.id == item.id %}class="active"{% endif %} href="{{item.link}}">{{item.name}}</a></li>
+            <li class="nav-item"><a {% if page.id == item.id %}class="active"{% endif %} href="{{item.link}}">{{item.name}}</a></li>
         {% else %}
-            <li class="dropdown">
+            <li class="nav-item dropdown">
                 <a href="javascript:void(0)" class="dropbtn" {% if item.log %}class="log"{% endif %}>{{item.name}}</a>
                 <div class="dropdown-content">
                     {% for child in item.children %}
