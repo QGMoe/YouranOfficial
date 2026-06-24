@@ -4,7 +4,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
 
-debug = True
+debug = False
 debug_pre = "___"
 
 def get_markdown(mdfile:str) -> str:
