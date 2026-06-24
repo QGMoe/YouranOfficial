@@ -3,7 +3,7 @@ from jinja2 import Environment, FileSystemLoader
 from bs4 import BeautifulSoup
 from pathlib import Path
 
-debug = True
+debug = False
 debug_pre = "___"
 
 def get_changelogs():
