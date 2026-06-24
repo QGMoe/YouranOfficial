@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<title>{{ page.title }}</title>
+		<meta charset="utf-8" />
+		<link rel="icon" href="/icon.png" />
+		<script defer src="https://xn--kbry83c.xn--gr1a.xn--6frz82g/script.js" data-website-id="2f55b11f-0259-4ac8-8228-3519f71e7f66"></script>
+        {% block head %}{% endblock %}
+	</head>
+	<link rel="stylesheet" href="css/main.css" />
+	<body>
+		<div id="header">
+            {% include "_partials/nav_old.html" %}
+		</div>
+		<div>
+			{% block content %}{% endblock %}
+		</div>
+</body>
+</html>

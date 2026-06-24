@@ -1,0 +1,85 @@
+{% extends "old/_base.html" %}
+
+{% block content %}
+	<h1 style="text-align: center">Minecraft服务器信息</h1>
+	<h2><a name="1">mod列表</a></h2>
+	<table border="1">
+		<caption>服务器已安装模组、插件列表</caption>
+		{% include "_partials/info_table.html" %}
+	</table>
+	<h2><a name="2">服务器配置信息</a></h2>
+	<table border="1">
+		<tr>
+			<th>服务器类型</th>
+			<td>中国广州腾讯云轻量应用服务器</td>
+			<th>内存</th>
+			<td>3694MB</td>
+			<th>系统</th>
+			<td>Linux</td>
+		</tr>
+		<tr>
+			<th>存储</th>
+			<td>60GB</td>
+			<th>带宽</th>
+			<td>5Mbps（0.625MB/s）</td>
+		</tr>
+	</table>
+	<h2><a name="3">服务器信息（MCBBS标准）</a></h2>
+	<table>
+		<tr>
+			<th>服务器名称</th>
+			<td>悠然Minecraft服务器</td>
+			<th>服务端Mod/插件</th>
+			<td>Dynmap,DebugServerInfo,The Twilight Forest暮色森林,Portal Super Cache传送门超级缓存,Phosphor磷
+			,The Lost Cities失落的城市,Lost Souls失落的灵魂,Forge Auto Shutdown,MCDJ,Chunk-Pregenerator区块预生成器,
+			AI Improvements	AI改进,FoamFix泡沫修复,TickThreading线程优化,LootTweaker,CraftTweaker,ChickenChunks区块载入器,CodeChicken Lib,SCP: Lockdown SCP基金会：封锁,Creeper Confetti烟花苦力怕,Spawn Commands Teleport传送指令,
+			Waystones传送石碑,NetherPortalFix下界传送门修正,Tinkers' Construct 2匠魂2,Mantle地幔,Easy Retrogen简易重生成,Placebo,
+			FastFurnace熔炉性能优化,Serene Seasons静谧四季,Carry On搬运,Permafrost,Construct's Armory匠魂盔甲,Quark夸克,AutoRegLib,
+			Tough As Nails意志坚定,Duplicate Entity UUID Fix,Another Common Bug Fix另一个通用Bug修复,SpongeForge海绵端插件支持Forge版,Authentic,Dynamic Trees动态的树/有活力的树,Dynamic Trees - Tinker's Construct动态的树：匠魂附属,1.13 Water Mechanics1.13水域机制,ALib,wude武德,Fexcraft Common Library,BackStab背刺,Tinkers' Addons匠魂拓展,Shadowfacts' Forgelin,Patchouli帕秋莉手册,Dynamic Trees-The Twilight Forest动态的树：暮色森林附属,LuckPerms,Tinkers' Tool Leveling匠魂工具升级,Total Tinkers统合匠艺,Tinkers OreDict Cache匠魂矿辞缓存,MixinBooter,RFToolsRF工具箱,McJtyLib,悠然服务器模组,fix4log4j,Universe Guard,Immersive Engineering沉浸工程,ASMC,Aqua Acrobatics水游技艺,Chinese Workshop中式工坊,Dynamic Trees - Quark动态的树:夸克附属,MrCrayfish's Furniture Mod MrCrayfish 的家具,LagGoggles,Bed Bugs,Immersive Posts沉浸长杆,Immersive Petroleum沉浸原油,Sky Lanterns孔明灯,CoroUtil,Industrial Craft 2工业时代2,KleeSlabs,BitHop,Converting Industrial Wires工业线缆：转化版,Offline Server Username Web Request Network Manager管理离线服务器用户名网络Web请求,Epic Ban Item,Virtual Chest虚拟箱子GUI,PlaceholderAPI,spark火花</td>
+		<tr>
+		<tr>
+			<th>有效状态</th>
+			<td>长期开放</td>
+			<th>客户端下载地址</th>
+			<td><a href="https://c13class-1305965891.cos-website.ap-shanghai.myqcloud.com/youran/YouranServer.zip">https://c13class-1305965891.cos-website.ap-shanghai.myqcloud.com/youran/YouranServer.zip</a></td>
+		<tr>
+		<tr>
+			<th>支持版本</th>
+			<td>1.12.2</td>
+			<th>有无白名单</th>
+			<td>有</td>
+		<tr>
+		<tr>
+			<th>盈利模式</th>
+			<td>公益服务器 » 全部免费+接受“无条件”捐助</td>
+			<th>联系方式</th>
+			<td>QQ群：953168624|网站：youran.qingu.moe|mirror.youranserver.top（备用）</td>
+		<tr>
+		<tr>
+			<th>游戏模式</th>
+			<td>生存</td>
+			<th>服务器IP/域名</th>
+			<td>server.youranserver.top</td>
+		<tr>
+		<tr>
+			<th>网络类型</th>
+			<td>双线/多线</td>
+		<tr>
+		<tr>
+			<th>主机类型</th>
+			<td>专业主机</td>
+		<tr>
+		<tr>
+			<th>正版验证</th>
+			<td>无</td>
+		<tr>
+		<tr>
+			<th>最大在线人数</th>
+			<td>20</td>
+		<tr>
+		<tr>
+			<th>服务器类型</th>
+			<td>Mod服务器 » 需要下载专用客户端</td>
+		<tr>
+	</table>
+{% endblock %}

@@ -6,12 +6,7 @@
 			<div class="heading_container">
 				<h2>更新日志</h2>
 			</div>
-			{% for entry in changelogs %}
-				<div class="day" id="{{entry.id}}">
-					<h2><a name="{{entry.id}}">{{entry.title}}</a></h2>
-					{{entry.content}}
-				</div> 
-			{% endfor %}
+			{% include "_partials/changelog_list.html" %}
 		</div>
 	</section>
 {% endblock first_area %}

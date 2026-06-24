@@ -1,6 +1,10 @@
 import json, os, markdown
 from jinja2 import Environment, FileSystemLoader
 from bs4 import BeautifulSoup
+from pathlib import Path
+
+debug = False
+debug_pre = "___"
 
 def get_changelogs():
     md_files = [f for f in os.listdir("./changelog") if f.endswith('.md')]
@@ -54,27 +58,32 @@ def downgrade_headings(html_content):
 def main():
     env = Environment(loader=FileSystemLoader("templates"))
 
-    for name in ["pages", "navs"]:
+    for name in ["pages", "navs", "old_navs"]:
         with open(f"data/{name}.json", encoding="utf-8") as f:
             env.globals[name] = json.load(f)
+
+    changelog = get_changelogs();
 
     os.makedirs("dist", exist_ok=True)
 
     for page in env.globals["pages"]:
         id = page["id"];
-        navs = env.globals["navs"] + page.get("navs",[]);
+        navs = ( env.globals["old_navs"] if id.startswith("old/") else env.globals["navs"]) + page.get("navs",[]);
 
-        data = {"page":page,"nav_items":navs}
+        data = {"page":page,"nav_items":navs,"changelogs":changelog}
 
         if "ext" in page:
             for ext in page["ext"]:
                 with open(f"data/{ext}.json",encoding="utf-8") as f:
                     data[ext] = json.load(f)
-        if "update" == id:
-            data["changelogs"] = get_changelogs();
 
         template = env.get_template(f"{id}.html")
-        with open(f"dist/{id}.html", "w", encoding="utf-8") as f:
+
+        output = f"dist/{debug_pre if debug else ''}{id}.html"
+        output_path = Path(output)
+        output_path.parent.mkdir(parents=True,exist_ok=True) #保证目录存在
+
+        with open(output, "w", encoding="utf-8") as f:
             f.write(template.render(**data))
         print(f"成功构建：{id}.html")
 

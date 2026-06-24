@@ -1,13 +1,6 @@
 {% extends "_base.html" %}
 
 {% block first_area %}
-	{% set install_mode = {
-	"C" : "否（仅客户端）",
-	"B" : "是",
-	"S" : "否（仅服务端）",
-	"Y" : "否",
-	"P" : "这是插件唉"
-	} %}
 	<section class="serverinfo_section">
 		<div class="heading_container">
 			<h2>Minecraft服务器信息</h2>
@@ -15,26 +8,7 @@
 		<h2><a name="1">mod、插件列表</a></h2>
 		<div class="table_div">
 			<table border="1">
-				<th>原名</th>
-				<th>中文名</th>
-				<th>版本号</th>
-				<th>安装时间</th>
-				<th>主要作用</th>
-				<th>必须双端</th>
-				<th>整合包内有无</th>
-				<th>相关链接</th>
-				{% for mod in mod_list %}
-					<tr {% if mod.deleted | default(false) %}class="removed"{% endif %}>
-						<td>{{mod.raw}}</td>
-						<td>{{mod.trans | default("&nbsp;")}}</td>
-						<td>{{mod.ver}}</td>
-						<td>{{mod.time}}</td>
-						<td>{{mod.comment}}</td>
-						<td>{{install_mode[mod.mode] | default("？")}}</td>
-						<td>{% if mod.mode != "S" and mod.mode != "P" %}{{"有" if mod.in_pack | default(true) else "无"}}{% else %}无{% endif %}</td>
-						<td><a target="_blank" href="{{mod.link}}">{{ mod.link_name | default("MC百科")}}</a></td>
-					</tr>
-				{% endfor %}
+				{% include "_partials/info_table.html" %}
 			</table>
 		</div>
 		<h2><a name="2">服务器配置信息</a></h2>

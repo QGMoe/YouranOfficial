@@ -1,0 +1,27 @@
+{% set install_mode = {
+    "C" : "否（仅客户端）",
+    "B" : "是",
+    "S" : "否（仅服务端）",
+    "Y" : "否",
+    "P" : "这是插件唉"
+} %}
+<th>原名</th>
+<th>中文名</th>
+<th>版本号</th>
+<th>安装时间</th>
+<th>主要作用</th>
+<th>必须双端</th>
+<th>整合包内有无</th>
+<th>相关链接</th>
+{% for mod in mod_list %}
+    <tr {% if mod.deleted | default(false) %}class="removed"{% endif %}>
+        <td>{{mod.raw}}</td>
+        <td>{{mod.trans | default("&nbsp;")}}</td>
+        <td>{{mod.ver}}</td>
+        <td>{{mod.time}}</td>
+        <td>{{mod.comment}}</td>
+        <td>{{install_mode[mod.mode] | default("？")}}</td>
+        <td>{% if mod.mode != "S" and mod.mode != "P" %}{{"有" if mod.in_pack | default(true) else "无"}}{% else %}无{% endif %}</td>
+        <td><a target="_blank" href="{{mod.link}}">{{ mod.link_name | default("MC百科")}}</a></td>
+    </tr>
+{% endfor %}

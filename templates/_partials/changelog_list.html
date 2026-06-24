@@ -1,0 +1,6 @@
+{% for entry in changelogs %}
+    <div class="day" id="{{entry.id}}">
+        <h2><a name="{{entry.id}}">{{entry.title}}</a></h2>
+        {{entry.content}}
+    </div> 
+{% endfor %}
