@@ -82,6 +82,12 @@
                     }
                 ]
             }
+        ],
+        "markdowns":[
+            {
+                "id":"content",
+                "path":"old/index/content.md"
+            }
         ]
     },
     {
