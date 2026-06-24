@@ -3,7 +3,7 @@ from jinja2 import Environment, FileSystemLoader
 from bs4 import BeautifulSoup
 from pathlib import Path
 
-debug = False
+debug = True
 debug_pre = "___"
 
 def get_changelogs():
@@ -55,6 +55,13 @@ def downgrade_headings(html_content):
         heading.replace_with(new_tag)
     return str(soup)
 
+def get_markdown(mdfile:str):
+    with open(os.path.join("./markdowns", mdfile), "r", encoding="utf-8") as f:
+        lines = f.readlines()
+    if not lines:
+        return None
+    return markdown.markdown(''.join(lines), extensions=['extra', 'codehilite']);
+
 def main():
     env = Environment(loader=FileSystemLoader("templates"))
 
@@ -69,8 +76,12 @@ def main():
     for page in env.globals["pages"]:
         id = page["id"];
         navs = ( env.globals["old_navs"] if id.startswith("old/") else env.globals["navs"]) + page.get("navs",[]);
+        markdowns = {}
+        for md in page.get("markdowns",[]):
+            print(md)
+            markdowns[md["id"]] = get_markdown(md["path"]);
 
-        data = {"page":page,"nav_items":navs,"changelogs":changelog}
+        data = {"page":page,"nav_items":navs,"changelogs":changelog,"markdowns":markdowns}
 
         if "ext" in page:
             for ext in page["ext"]:

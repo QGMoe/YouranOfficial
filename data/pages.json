@@ -8,6 +8,12 @@
                 "link":"#download",
                 "is_direct":true
             }
+        ],
+        "markdowns":[
+            {
+                "id":"join",
+                "path":"index/join.md"
+            }
         ]
     },
     {

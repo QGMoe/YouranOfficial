@@ -455,30 +455,22 @@
     },
     {
         "title":"重生更新",
+        "brief":"重生是希望！",
         "links":[
             {
                 "name":"微云网盘",
-                "addr":"https://share.weiyun.com/xUo5GbIV"
-            },
-            {
-                "name":"百度网盘（提取码：yran）",
-                "addr":"https://pan.baidu.com/s/12ed5ikwhiDBLGW61YDa60Q?pwd=yran"
+                "addr":"https://share.weiyun.com/KVmBfzZ8"
             }
         ],
         "mcbbs_links":[
             {
                 "name":"微云网盘",
-                "addr":"https://share.weiyun.com/4Sj0KgwH"
-            },
-            {
-                "name":"百度网盘（提取码：yran）",
-                "addr":"https://pan.baidu.com/s/1WEw7TK2ksKMOeRNIFWPEUA?pwd=yran"
+                "addr":"https://share.weiyun.com/TVgYI0ZW"
             }
         ],
-        "brief":"此次更新修复了一些问题。",
         "id":"2.0.0.0",
-        "size":"198113KB",
-        "time":"2023-8-4",
+        "size":"196956KB",
+        "time":"2026-6-24",
         "era":2
     }
 ]
