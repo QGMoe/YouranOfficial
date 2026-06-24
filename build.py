@@ -2,7 +2,7 @@ import json, os, markdown, importlib.util
 from jinja2 import Environment, FileSystemLoader
 from pathlib import Path
 
-debug = True
+debug = False
 debug_pre = "___"
 
 def get_markdown(mdfile:str):
