@@ -1,59 +1,9 @@
-import json, os, markdown
+import json, os, markdown, importlib.util
 from jinja2 import Environment, FileSystemLoader
-from bs4 import BeautifulSoup
 from pathlib import Path
 
-debug = False
+debug = True
 debug_pre = "___"
-
-def get_changelogs():
-    md_files = [f for f in os.listdir("./changelog") if f.endswith('.md')]
-    
-    changelogs = []
-    for md_file in md_files:
-        path = os.path.join("./changelog", md_file)
-        entry_id = os.path.splitext(md_file)[0]  # 文件名（不含 .md）作为 id
-        
-        title, body = get_changelog_content(path)
-        if body is None:
-            continue
-        
-        content_html = downgrade_headings(markdown.markdown(body, extensions=['extra', 'codehilite']))
-        changelogs.append({
-            'id': entry_id,
-            'title': title,
-            'content': content_html
-        })
-    
-    changelogs.sort(key=lambda x: x['id'], reverse=True)
-    return changelogs
-
-def get_changelog_content(file_path):
-    with open(file_path, 'r', encoding='utf-8') as f:
-        lines = f.readlines()
-    
-    if not lines:
-        return None, None
-    
-    first_line = lines[0].strip()
-    if first_line.startswith('# '): # H1 作为标题
-        title = first_line[2:].strip()
-        body = ''.join(lines[1:]).lstrip() 
-    else:
-        title = os.path.splitext(os.path.basename(file_path))[0] #没有 H1,用文件名作为标题
-        body = ''.join(lines)
-    
-    return title, body
-
-def downgrade_headings(html_content):
-    soup = BeautifulSoup(html_content, 'html.parser')
-    for heading in soup.find_all(['h1', 'h2', 'h3', 'h4', 'h5']):
-        level = int(heading.name[1])
-        new_tag = soup.new_tag(f'h{level + 1}')
-        new_tag.attrs = dict(heading.attrs)
-        new_tag.extend(list(heading.children))
-        heading.replace_with(new_tag)
-    return str(soup)
 
 def get_markdown(mdfile:str):
     with open(os.path.join("./markdowns", mdfile), "r", encoding="utf-8") as f:
@@ -62,14 +12,19 @@ def get_markdown(mdfile:str):
         return None
     return markdown.markdown(''.join(lines), extensions=['extra', 'codehilite']);
 
+def load_script(script_path: str):
+    module_name = Path(script_path).stem
+    spec = importlib.util.spec_from_file_location(module_name, script_path)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module.build()
+
 def main():
     env = Environment(loader=FileSystemLoader("templates"))
 
     for name in ["pages", "navs", "old_navs"]:
         with open(f"data/{name}.json", encoding="utf-8") as f:
             env.globals[name] = json.load(f)
-
-    changelog = get_changelogs();
 
     os.makedirs("dist", exist_ok=True)
 
@@ -78,10 +33,12 @@ def main():
         navs = ( env.globals["old_navs"] if id.startswith("old/") else env.globals["navs"]) + page.get("navs",[]);
         markdowns = {}
         for md in page.get("markdowns",[]):
-            print(md)
             markdowns[md["id"]] = get_markdown(md["path"]);
 
-        data = {"page":page,"nav_items":navs,"changelogs":changelog,"markdowns":markdowns}
+        data = {"page":page,"nav_items":navs,"markdowns":markdowns}
+
+        for script in page.get("scripts",[]):
+            data[script["id"]] = load_script(os.path.join("./scripts",script["path"]))
 
         if "ext" in page:
             for ext in page["ext"]:
@@ -90,13 +47,15 @@ def main():
 
         template = env.get_template(f"{id}.html")
 
-        output = f"dist/{debug_pre if debug else ''}{id}.html"
+        output = f"dist/{id}.html"
         output_path = Path(output)
+        if debug: output_path = output_path.with_name(debug_pre+output_path.name)
         output_path.parent.mkdir(parents=True,exist_ok=True) #保证目录存在
 
-        with open(output, "w", encoding="utf-8") as f:
-            f.write(template.render(**data))
-        print(f"成功构建：{id}.html")
+        output_path.write_text(template.render(**data),encoding="utf-8")
+        print(f"成功构建：{id} --> {output_path}")
+            
+        
 
 if __name__ == '__main__':
     main()

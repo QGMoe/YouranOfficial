@@ -37,7 +37,13 @@
     },
     {
         "title":"悠然MC服务器：服务端更新日志",
-        "id":"update"
+        "id":"update",
+        "scripts":[
+            {
+                "id":"changelogs",
+                "path":"changelog.py"
+            }
+        ]
     },
     {
         "title":"悠然MC服务器：所有版本",
@@ -130,6 +136,12 @@
     },
     {
         "title":"悠然MC服务器：服务端更新日志",
-        "id":"old/update"
+        "id":"old/update",
+        "scripts":[
+            {
+                "id":"changelogs",
+                "path":"changelog.py"
+            }
+        ]
     }
 ]

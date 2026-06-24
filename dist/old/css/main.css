@@ -33,7 +33,7 @@ a{
 	text-decoration:none;
 	}
 
-.nav-bar ul {
+.nav-bar{
   list-style-type: none;
   margin: 0;
   padding: 0;
@@ -41,7 +41,7 @@ a{
   background-color: #CC6600;
 }
 
-.nav-item li {
+.nav-item{
   float: left;
   background-color: #CC6600;
 }
