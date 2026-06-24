@@ -1,22 +1,21 @@
-import json, os, markdown, importlib.util
+import json, os, markdown, importlib.util, sys
 from jinja2 import Environment, FileSystemLoader
 from pathlib import Path
 
-debug = False
+sys.path.insert(0, str(Path(__file__).parent))
+
+debug = True
 debug_pre = "___"
 
-def get_markdown(mdfile:str):
-    with open(os.path.join("./markdowns", mdfile), "r", encoding="utf-8") as f:
+def get_markdown(mdfile:str) -> str:
+    with open(mdfile, "r", encoding="utf-8") as f:
         lines = f.readlines()
     if not lines:
         return None
     return markdown.markdown(''.join(lines), extensions=['extra', 'codehilite']);
 
-def load_script(script_path: str):
-    module_name = Path(script_path).stem
-    spec = importlib.util.spec_from_file_location(module_name, script_path)
-    module = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(module)
+def load_script(script_module_name: str) -> dict:
+    module = importlib.import_module(script_module_name)
     return module.build()
 
 def main():
@@ -33,12 +32,12 @@ def main():
         navs = ( env.globals["old_navs"] if id.startswith("old/") else env.globals["navs"]) + page.get("navs",[]);
         markdowns = {}
         for md in page.get("markdowns",[]):
-            markdowns[md["id"]] = get_markdown(md["path"]);
+            markdowns[md["id"]] = get_markdown(os.path.join("./markdowns", md["path"]));
 
         data = {"page":page,"nav_items":navs,"markdowns":markdowns}
 
         for script in page.get("scripts",[]):
-            data[script["id"]] = load_script(os.path.join("./scripts",script["path"]))
+            data[script["id"]] = load_script(f"scripts.{script['path']}")
 
         if "ext" in page:
             for ext in page["ext"]:

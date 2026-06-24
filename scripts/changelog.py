@@ -1,12 +1,12 @@
 import os, markdown
 from bs4 import BeautifulSoup
 
-def get_changelogs():
-    md_files = [f for f in os.listdir("./changelog") if f.endswith('.md')]
+def get_changelogs(dir:str):
+    md_files = [f for f in os.listdir(dir) if f.endswith('.md')]
     
     changelogs = []
     for md_file in md_files:
-        path = os.path.join("./changelog", md_file)
+        path = os.path.join(dir, md_file)
         entry_id = os.path.splitext(md_file)[0]  # 文件名（不含 .md）作为 id
         
         title, body = get_changelog_content(path)
@@ -51,4 +51,4 @@ def downgrade_headings(html_content):
     return str(soup)
 
 def build():
-    return get_changelogs();
+    return get_changelogs("./changelog/server");

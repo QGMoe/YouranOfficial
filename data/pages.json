@@ -33,7 +33,13 @@
     },
     {
         "title":"悠然MC服务器：魔改模组",
-        "id":"mods"
+        "id":"mods",
+        "scripts":[
+            {
+                "id":"mods",
+                "path":"mods"
+            }
+        ]
     },
     {
         "title":"悠然MC服务器：服务端更新日志",
@@ -41,7 +47,7 @@
         "scripts":[
             {
                 "id":"changelogs",
-                "path":"changelog.py"
+                "path":"changelog"
             }
         ]
     },
@@ -140,7 +146,7 @@
         "scripts":[
             {
                 "id":"changelogs",
-                "path":"changelog.py"
+                "path":"changelog"
             }
         ]
     }
