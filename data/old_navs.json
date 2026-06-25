@@ -43,6 +43,11 @@
                 "outlink":true
             },
             {
+                "name":"服务器状态信息",
+                "link":"https://status.qingu.moe/status/youran",
+                "outlink":true
+            },
+            {
                 "name":"MC百科找服玩",
                 "link":"https://play.mcmod.cn/sv20185890.html",
                 "outlink":true

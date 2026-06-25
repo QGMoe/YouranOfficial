@@ -38,6 +38,11 @@
                 "outlink":true
             },
             {
+                "name":"服务器状态信息",
+                "link":"https://status.qingu.moe/status/youran",
+                "outlink":true
+            },
+            {
                 "id":"mods",
                 "name":"魔改信息",
                 "link":"/mods.html",

@@ -1,11 +1,18 @@
-import json, os, markdown, importlib.util, sys
+import json, os, markdown, importlib, sys, argparse
 from jinja2 import Environment, FileSystemLoader
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
 
-debug = False
-debug_pre = "___"
+DEBUG_PRE = "___";
+DEBUG = True;
+
+def load_args():
+    global DEBUG
+    arg_parse = argparse.ArgumentParser();
+    arg_parse.add_argument("--do", action="store_true", help="进行正式构建");
+    args = arg_parse.parse_args();
+    DEBUG = not args.do
 
 def get_markdown(mdfile:str) -> str:
     with open(mdfile, "r", encoding="utf-8") as f:
@@ -19,6 +26,7 @@ def load_script(script_module_name: str) -> dict:
     return module.build()
 
 def main():
+    load_args()
     env = Environment(loader=FileSystemLoader("templates"))
 
     for name in ["pages", "navs", "old_navs"]:
@@ -48,13 +56,11 @@ def main():
 
         output = f"dist/{id}.html"
         output_path = Path(output)
-        if debug: output_path = output_path.with_name(debug_pre+output_path.name)
+        if DEBUG: output_path = output_path.with_name(DEBUG_PRE+output_path.name)
         output_path.parent.mkdir(parents=True,exist_ok=True) #保证目录存在
 
         output_path.write_text(template.render(**data),encoding="utf-8")
         print(f"成功构建：{id} --> {output_path}")
-            
-        
 
 if __name__ == '__main__':
     main()
