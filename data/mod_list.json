@@ -61,6 +61,7 @@
         "comment": "优化服务器",
         "mode": "B",
         "deleted": true,
+        "in_pack":false,
         "link": "https://www.mcmod.cn/class/1766.html"
     },
     {
@@ -115,6 +116,7 @@
         "time": "2021年10月2日",
         "comment": "优化服务器",
         "mode": "Y",
+        "deleted":true,
         "in_pack": false,
         "link": "https://www.mcmod.cn/class/1480.html"
     },
@@ -125,6 +127,7 @@
         "time": "2021年10月2日",
         "comment": "优化服务器",
         "mode": "Y",
+        "deleted":true,
         "in_pack": false,
         "link": "https://www.mcmod.cn/class/978.html"
     },
@@ -136,7 +139,7 @@
         "comment": "优化服务器",
         "deleted": true,
         "mode": "B",
-        "in_pack": true,
+        "in_pack": false,
         "link": "https://www.mcmod.cn/class/199.html"
     },
     {
@@ -903,7 +906,7 @@
     {
         "raw": "Converting Industrial Wires",
         "trans": "工业线缆：转化版",
-        "ver": "1.7-39",
+        "ver": "1.8",
         "time": "2022年3月27日",
         "comment": "让RF、Flux和EU可以互相使用",
         "mode": "B",
