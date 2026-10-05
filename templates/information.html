@@ -1,34 +1,64 @@
 {% extends "_base.html" %}
 
-{% block first_area %}
-	<section class="serverinfo_section">
-		<div class="heading_container">
-			<h2>Minecraft服务器信息</h2>
+{% set install_mode = {
+	"C" : "否（仅客户端）",
+	"B" : "是",
+	"S" : "否（仅服务端）",
+	"Y" : "否",
+	"P" : "这是插件唉"
+} %}
+
+{% block main %}
+<div class="page-head">
+	<div class="wrap">
+		<h1>Minecraft服务器信息</h1>
+		<nav class="toc" aria-label="本页目录">
+			<a href="#1">{{ icon('list') }}mod、插件列表</a>
+			<a href="#2">{{ icon('cpu') }}服务器配置信息</a>
+		</nav>
+	</div>
+</div>
+<div class="wrap content">
+	<section class="block" aria-labelledby="1">
+		<div class="block-head">
+			<h2 id="1">mod、插件列表</h2>
 		</div>
-		<h2><a name="1">mod、插件列表</a></h2>
-		<div class="table_div">
-			<table border="1">
-				{% include "_partials/info_table.html" %}
-			</table>
-		</div>
-		<h2><a name="2">服务器配置信息</a></h2>
-		<div class="table_div">
-			<table border="1">
-				<tr>
-					<th>服务器类型</th>
-					<td>中国江苏旋律云 VPS</td>
-					<th>内存</th>
-					<td>4.76 GB</td>
-					<th>系统</th>
-					<td>Ubuntu 24</td>
-				</tr>
-				<tr>
-					<th>存储</th>
-					<td>120GB</td>
-					<th>带宽</th>
-					<td>10Mbps（1.25MB/s）</td>
-				</tr>
+		<div class="table-scroll" tabindex="0" role="region" aria-label="mod、插件列表（可横向滚动）">
+			<table class="mods">
+				<caption class="sr">mod、插件列表</caption>
+				<thead><tr>
+					<th scope="col">原名</th><th scope="col">中文名</th><th scope="col">版本号</th><th scope="col">安装时间</th>
+					<th scope="col">主要作用</th><th scope="col">必须双端</th><th scope="col">整合包内有无</th><th scope="col">相关链接</th>
+				</tr></thead>
+				<tbody>
+				{%- for mod in mod_list %}
+					<tr{% if mod.deleted %} class="removed"{% endif %}>
+						<th scope="row" class="c-name" data-label="原名">{{ mod.raw }}</th>
+						<td class="c-trans" data-label="中文名">{{ mod.trans | default("") }}</td>
+						<td class="c-ver" data-label="版本号">{{ mod.ver }}</td>
+						<td class="c-time" data-label="安装时间">{{ mod.time }}</td>
+						<td class="c-comment" data-label="主要作用">{{ mod.comment | safe }}</td>
+						<td class="c-mode" data-label="必须双端">{{ install_mode[mod.mode] | default("？") }}</td>
+						<td class="c-pack" data-label="整合包内有无">{% if mod.mode != "S" and mod.mode != "P" %}{{ "有" if mod.in_pack | default(true) else "无" }}{% else %}无{% endif %}</td>
+						<td class="c-link" data-label="相关链接">{% if mod.link %}<a target="_blank" rel="noopener" href="{{ mod.link }}">{{ mod.link_name | default("MC百科") }}</a>{% endif %}</td>
+					</tr>
+				{%- else %}
+					<tr><td colspan="8">暂无数据</td></tr>
+				{%- endfor %}
+				</tbody>
 			</table>
 		</div>
 	</section>
+
+	<section class="block" aria-labelledby="2">
+		<h2 id="2">服务器配置信息</h2>
+		<dl class="spec">
+			<div><dt>服务器类型</dt><dd>中国江苏旋律云 VPS</dd></div>
+			<div><dt>内存</dt><dd>4.76 GB</dd></div>
+			<div><dt>系统</dt><dd>Ubuntu 24</dd></div>
+			<div><dt>存储</dt><dd>120GB</dd></div>
+			<div><dt>带宽</dt><dd>10Mbps（1.25MB/s）</dd></div>
+		</dl>
+	</section>
+</div>
 {% endblock %}

@@ -1,158 +1,107 @@
 {% extends "_base.html" %}
 
-{% block first_area %}
-	<section class="slider_section position-relative">
-		<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
-			<div class="carousel-inner">
-				<div class="carousel-item active">
-					<div class="container">
-						<div class="col-lg-10 col-md-11 mx-auto">
-							<div class="detail-box">
-								<div>
-									{{markdowns.intro}}
-									<div class="">
-										<a href="#download">加 入 服 务 器</a>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</section>
+{% block head %}
+	<script type="application/ld+json">
+	{"@context":"https://schema.org","@graph":[
+	 {"@type":"WebSite","@id":"https://youran.qingu.moe/#website","url":"https://youran.qingu.moe/","name":"悠然MC服务器","alternateName":["悠然服务器","Youran Server"],"inLanguage":"zh-CN","publisher":{"@id":"https://youran.qingu.moe/#org"}},
+	 {"@type":"Organization","@id":"https://youran.qingu.moe/#org","name":"悠然MC服务器","url":"https://youran.qingu.moe/","logo":"https://youran.qingu.moe/assets/logo-128.png",
+	  "sameAs":["https://portal-youran.qingu.moe/","https://docs.youran.qingu.moe/","https://yr-map.qingu.moe/"]}
+	]}
+	</script>
+	<script defer src="/assets/status.js"></script>
+	{#- 首屏背景（bg2）预加载：候选与 CSS 里按宽度 / 像素密度选图的规则一致，避免首屏背景晚出现 #}
+	<link rel="preload" as="image" href="/assets/bg2-960.webp" imagesrcset="/assets/bg2-960.webp 960w, /assets/bg2-1600.webp 1600w" imagesizes="100vw" fetchpriority="high">
 {% endblock %}
 
-{% block content %}
-	<section class="feature_section layout_padding">
-		<div class="container">
-			<div class="heading_container">
-				<h2>特色</h2>
+{% block main %}
+<section class="hero hero-split has-bg bg-farm" aria-labelledby="hero-title">
+	<div class="wrap hero-inner">
+		<div class="hero-text">
+			<div class="intro">
+				{{ markdowns.intro|safe }}
 			</div>
+			<div class="actions">
+				<a class="button primary" href="#download">{{ icon('log-in') }}加入服务器</a>
+			</div>
+		</div>
+	</div>
+</section>
 
-			<div class="feature_container">
-				<div class="row">
-					<div class="col-lg-3 col-md-6">
-						<div class="box">
-							<div class="img-box">
-								<i class="fa-solid fa-pencil fa-2xl" style="color: #FF6633;"></i>
-							</div>
-							<div class="detail-box">
-								<h5>少许魔改</h5>
-								<p>
-									我们为了让各个模组能够互相联动，利用一些魔改模组修改或新增了一些东西。
-								</p>
-							</div>
-						</div>
-					</div>
-					<div class="col-lg-3 col-md-6">
-						<div class="box">
-							<div class="img-box">
-								<i class="fa-solid fa-layer-group fa-2xl" style="color: #FF6633;"></i>
-							</div>
-							<div class="detail-box">
-								<h5>安全备份</h5>
-								<p>
-									服务器每天都会对存档进行两次备份，并重点备份玩家数据，基本不用担心数据丢失！
-								</p>
-							</div>
-						</div>
-					</div>
-					<div class="col-lg-3 col-md-6">
-						<div class="box">
-							<div class="img-box">
-								<i class="fa-solid fa-signal fa-2xl" style="color: #FF6633;"></i>
-							</div>
-							<div class="detail-box">
-								<h5>离线模式</h5>
-								<p>
-									我们是离线服务器，不需要玩家需要正版账号。但我们同时也通过开启白名单、加装登录插件等方式来防止玩家恶意破坏。
-								</p>
-							</div>
-						</div>
-					</div>
-					<div class="col-lg-3 col-md-6">
-						<div class="box">
-							<div class="img-box">
-								<i class="fa-regular fa-heart fa-2xl" style="color: #FF6633;"></i>
-							</div>
-							<div class="detail-box">
-								<h5>公益服！</h5>
-								<p>
-									我们是公益服，不需要花费任何一分钱即可游玩。当然你想要无偿赞助也不是不可以。
-								</p>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
+<section class="section section-features" id="features" aria-labelledby="t-features">
+	<div class="wrap">
+		<h2 class="section-title" id="t-features">特色</h2>
+		<div class="feature-grid">
+			<article class="feature">
+				<span class="feature-ic">{{ icon('pencil') }}</span>
+				<h3>少许魔改</h3>
+				<p>我们为了让各个模组能够互相联动，利用一些魔改模组修改或新增了一些东西。</p>
+			</article>
+			<article class="feature">
+				<span class="feature-ic">{{ icon('layers') }}</span>
+				<h3>安全备份</h3>
+				<p>服务器每天都会对存档进行两次备份，并重点备份玩家数据，基本不用担心数据丢失！</p>
+			</article>
+			<article class="feature">
+				<span class="feature-ic">{{ icon('signal') }}</span>
+				<h3>离线模式</h3>
+				<p>我们是离线服务器，不需要玩家需要正版账号。但我们同时也通过开启白名单、加装登录插件等方式来防止玩家恶意破坏。</p>
+			</article>
+			<article class="feature">
+				<span class="feature-ic">{{ icon('heart') }}</span>
+				<h3>公益服！</h3>
+				<p>我们是公益服，不需要花费任何一分钱即可游玩。当然你想要无偿赞助也不是不可以。</p>
+			</article>
 		</div>
-	</section>
+	</div>
+</section>
 
-	<section class="disadvantage_section layout_padding">
-		<div class="container">
-			<div class="row">
-				<div class="col-md-12 mx-auto">
-					<div class="detail-box">
-						{{markdowns.disadvantages}}
-					</div>
-				</div>
-			</div>
+<section class="section section-cons" id="disadvantages" aria-labelledby="t-cons">
+	<div class="wrap cons-wrap">
+		<div class="cons-card">
+			{{ markdowns.disadvantages|md_cons }}
 		</div>
-	</section>
+	</div>
+</section>
 
-	<section class="download_section layout_padding">
-		<div class="container">
-			<div class="heading_container">
-				<h2><a name="download">加入服务器</a></h2>
-			</div>
-			<div class="row">
-				<div class="col-md-12 mx-auto">
-					<div class="detail-box">
-						{{markdowns.join}}
-					</div>
-				</div>
-			</div>
+<section class="section section-join has-bg bg-rail" id="download" aria-labelledby="t-join">
+	<div class="wrap">
+		<h2 class="section-title" id="t-join">加入服务器</h2>
+		<div class="join-md">
+			{{ markdowns.join|md_join }}
 		</div>
-	</section>
+	</div>
+</section>
 
-	<section class="info_section layout_padding2">
-		<div class="container">
-			<div class="info_items">
-				<a href="#">
-					<div class="item">
-						<i class="fa-solid fa-server fa-2xl" style="color: #ffffff;"></i>
-						<br />
-						<div class="detail-box">
-							<p>server.youranserver.top</p>
-						</div>
-					</div>
-				</a>
-				<a target="_blank" href="https://jq.qq.com/?_wv=1027&k=Hwv4w2NU">
-					<div class="item">
-						<i class="fa-brands fa-qq fa-2xl" style="color: #ffffff;"></i>
-						<br />
-						<div class="detail-box">
-							<p>953168624</p>
-						</div>
-					</div>
-				</a>
-				<a href="#">
-					<div class="item">
-						<i class="fa-solid fa-house fa-2xl" style="color: #ffffff;"></i>
-						<br />
-						<div class="detail-box">
-							<p>youran.qingu.moe</p>
-						</div>
-					</div>
-				</a>
+<section class="section section-info" aria-label="联系方式">
+	<div class="wrap">
+		<ul class="info-items">
+			<li><span class="info-ic">{{ icon('server') }}</span><span class="info-v">serv.youran.qingu.moe:23103</span></li>
+			<li><a href="https://jq.qq.com/?_wv=1027&amp;k=Hwv4w2NU" target="_blank" rel="noopener"><span class="info-ic">{{ icon('users') }}</span><span class="info-v">953168624</span></a></li>
+			<li><span class="info-ic">{{ icon('house') }}</span><span class="info-v">youran.qingu.moe</span></li>
+		</ul>
+		<p class="info-foot">本服务器由旋律云驱动，<a href="https://www.rhymc.com/aff.php?aff=1140" rel="sponsored noopener" target="_blank">了解旋律云</a></p>
+		{%- set pack = site.pack %}
+		<div class="status-card block" id="server-status" aria-labelledby="t-status"
+			data-api="https://portal-youran.qingu.moe/api/public/status" data-manifest="https://dl-yr.qg.mo.cn/server-manifest.json">
+			<div class="status-head">
+				<h2 id="t-status">{{ icon('activity') }}服务器状态</h2>
+				<p class="status-pill" data-state="unavailable"><span class="dot" aria-hidden="true"></span><span class="status-text" aria-live="polite">实时状态暂不可用</span></p>
 			</div>
+			<dl class="status-grid">
+				<div><dt>服务器地址</dt><dd class="mono">serv.youran.qingu.moe:<wbr>23103</dd></div>
+				<div><dt>在线人数</dt><dd data-field="online">—</dd></div>
+				<div><dt data-field="time-label">运行时长</dt><dd data-field="time">—</dd></div>
+				<div><dt>整合包版本</dt><dd><span data-field="pack">{{ pack.version }}</span><span class="status-sub muted" data-field="pack-detail">
+					{%- if pack.forge or pack.game %}{% if pack.game %}Minecraft {{ pack.game }}{% endif %}{% if pack.forge and pack.game %} · {% endif %}{% if pack.forge %}Forge {{ pack.forge }}{% endif %}{% endif -%}
+				</span></dd></div>
+			</dl>
+			<div class="status-players">
+				<p class="status-label">在线玩家</p>
+				<ul class="players" data-field="players"><li class="none">—</li></ul>
+			</div>
+			<p class="status-foot muted"><span data-field="updated"></span><a href="https://status.qingu.moe/status/youran" target="_blank" rel="noopener">查看服务器状态页{{ icon('ext', 'i ext') }}<span class="sr">（新窗口打开）</span></a></p>
 		</div>
-		<div style="text-align: center;">
-			<p style="color: #ffffff;">本服务器由旋律云驱动，<a target="_blank" href="https://www.rhymc.com/aff.php?aff=1140">了解旋律云</a></p>
-		</div>
-		<div style="text-align: center;">
-			<img src="https://status.qingu.moe/api/badge/18/status?style=for-the-badge"/>
-		</div>
-	</section>
+		<p class="info-badge"><a href="https://status.qingu.moe/status/youran" target="_blank" rel="noopener"><img src="https://status.qingu.moe/api/badge/18/status?style=for-the-badge" alt="服务器状态（Uptime Kuma 监控）" height="28" loading="lazy"></a></p>
+	</div>
+</section>
 {% endblock %}

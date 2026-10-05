@@ -1,23 +1,111 @@
 {% extends "_base.html" %}
 
-{% block first_area %}
-	<section class="update_section">
-		<div id="data">
-			<div class="heading_container">
-				<h2>更新日志</h2>
-			</div>
-			{% include "_partials/changelog_list.html" %}
-		</div>
-	</section>
-{% endblock first_area %}
+{% set years = changelogs|by_year %}
+{#- 最新的 page.expanded 篇完整展开，其余折叠（<details>）；锚点 #YYYYMMDD 打开时自动展开 -#}
+{% set expanded_ids = changelogs[:page.expanded | default(changelogs|length)] | map(attribute="id") | list %}
 
-{% block content %}
-	<script>
-		var data = $["data"].getElementsByClassName("day");
-		function fliter(value){
-			for(var i=0;i<data.length;i++){
-				var d = data[i];
-			}
-		}
-	</script>
-{% endblock content %}
+{% macro toc_list() %}
+	{%- for y in years %}
+	<li class="toc-year"><a class="toc-year-link" href="#y{{ y.year }}">{{ y.year }} 年<span class="count">{{ y.entries|length }} 篇</span></a>
+		<ul>
+			{%- for entry in y.entries %}
+			<li><a href="#{{ entry.id }}">{{ entry.short }}</a></li>
+			{%- endfor %}
+		</ul>
+	</li>
+	{%- endfor %}
+{% endmacro %}
+
+{% block main %}
+<div class="page-head">
+	<div class="wrap">
+		<h1>更新日志</h1>
+		<nav class="toc year-chips" aria-label="按年份跳转">
+			{%- for y in years %}
+			<a href="#y{{ y.year }}">{{ icon('calendar') }}{{ y.year }} 年</a>
+			{%- endfor %}
+		</nav>
+		<details class="toc-mobile">
+			<summary>{{ icon('list') }}按日期跳转<span class="muted">（{{ changelogs|length }} 篇）</span>{{ icon('chevron-down', 'i chev') }}</summary>
+			<nav aria-label="按日期跳转"><ul class="toc-tree">{{ toc_list() }}</ul></nav>
+		</details>
+	</div>
+</div>
+
+<div class="wrap log-layout">
+	<aside class="log-aside">
+		<nav class="log-toc" aria-label="更新日志目录">
+			<p class="log-toc-title">目录</p>
+			<ul class="toc-tree">{{ toc_list() }}</ul>
+		</nav>
+	</aside>
+
+	<div class="log-list">
+		{%- for y in years %}
+		<p class="year-mark" id="y{{ y.year }}"><span>{{ y.year }} 年</span></p>
+			{%- for entry in y.entries %}
+			{%- if entry.id in expanded_ids %}
+		<article class="log-entry block" id="{{ entry.id }}" aria-labelledby="h-{{ entry.id }}">
+			<header class="log-head">
+				<h2 id="h-{{ entry.id }}">{{ entry.title }}</h2>
+				<a class="permalink" href="#{{ entry.id }}" aria-label="{{ entry.title }} 的链接">{{ icon('link') }}<span>#{{ entry.id }}</span></a>
+			</header>
+			<div class="prose">{{ entry.content|safe }}</div>
+		</article>
+			{%- else %}
+		<details class="log-entry log-old block" id="{{ entry.id }}">
+			<summary><h2>{{ entry.title }}</h2><span class="permalink-text muted">#{{ entry.id }}</span>{{ icon('chevron-down', 'i chev') }}</summary>
+			<div class="prose">{{ entry.content|safe }}</div>
+			<p class="log-foot"><a class="permalink" href="#{{ entry.id }}" aria-label="{{ entry.title }} 的链接">{{ icon('link') }}本条链接</a></p>
+		</details>
+			{%- endif %}
+			{%- endfor %}
+		{%- else %}
+		<p class="block">暂无更新日志</p>
+		{%- endfor %}
+		{%- if expanded_ids|length < changelogs|length %}
+		<div class="log-tools">
+			<button class="button secondary" type="button" id="expand-all" aria-pressed="false">{{ icon('chevrons') }}<span>全部展开</span></button>
+			<a class="button secondary" href="#main">{{ icon('arrow-up') }}回到顶部</a>
+		</div>
+		{%- endif %}
+	</div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+(function () {
+	// 打开锚点所在的折叠条目（旧链接 update.html#20211017 仍然有效）
+	function openTarget(id, force) {
+		var el = id && document.getElementById(id);
+		if (!el) return;
+		var toc = document.querySelector('details.toc-mobile[open]');
+		var moved = false;
+		if (toc) { toc.open = false; moved = true; }  // 先收起手机目录，否则版面移动会让定位偏掉
+		var d = el.tagName === 'DETAILS' ? el : el.closest('details.log-entry');
+		if (d && !d.open) { d.open = true; moved = true; }
+		if (moved || force) el.scrollIntoView();
+	}
+	function openHash() { openTarget(decodeURIComponent(location.hash.slice(1)), false); }
+	window.addEventListener('hashchange', openHash);
+	openHash();
+	var toc = document.querySelector('details.toc-mobile');
+	if (toc) toc.addEventListener('click', function (e) {
+		var a = e.target.closest('a[href^="#"]');
+		if (!a) return;
+		e.preventDefault();
+		var id = decodeURIComponent(a.getAttribute('href').slice(1));
+		history.pushState(null, '', '#' + id);
+		openTarget(id, true);
+	});
+	var btn = document.getElementById('expand-all'), olds = document.querySelectorAll('details.log-old');
+	if (btn) btn.addEventListener('click', function () {
+		var open = btn.getAttribute('aria-pressed') !== 'true';
+		olds.forEach(function (d) { d.open = open; });
+		btn.setAttribute('aria-pressed', String(open));
+		btn.querySelector('span').textContent = open ? '全部收起' : '全部展开';
+	});
+})();
+</script>
+{% endblock %}

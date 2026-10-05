@@ -1,0 +1,23 @@
+{% extends "v2/_base.html" %}
+
+{% block first_area %}
+	<section class="update_section">
+		<div id="data">
+			<div class="heading_container">
+				<h2>更新日志</h2>
+			</div>
+			{% include "_partials/changelog_list.html" %}
+		</div>
+	</section>
+{% endblock first_area %}
+
+{% block content %}
+	<script>
+		var data = $["data"].getElementsByClassName("day");
+		function fliter(value){
+			for(var i=0;i<data.length;i++){
+				var d = data[i];
+			}
+		}
+	</script>
+{% endblock content %}

@@ -1,0 +1,27 @@
+{% extends "_base.html" %}
+
+{% block main %}
+<section class="nf wrap" aria-labelledby="nf-title">
+	<div class="nf-card block">
+		<p class="nf-code" aria-hidden="true">404</p>
+		<h1 id="nf-title">404，您请求的文件不存在!</h1>
+	</div>
+	{#- 看板娘"小悠"（像素画，tools/mascot/ 出图）：装饰图，空 alt。只发 1x 像素原尺寸 PNG，由 CSS 按整数倍放大（桌面 128 档 ×3，手机 96 档 ×2）并保持像素锐利 #}
+	<div class="nf-mascot" aria-hidden="true">
+		<picture>
+			<source media="(max-width: 860px)" srcset="/assets/mascot/xiaoyou-404-96.png" width="65" height="96">
+			<img src="/assets/mascot/xiaoyou-404-128.png" width="86" height="128" alt="" decoding="async">
+		</picture>
+		<svg class="nf-q nf-q1" viewBox="0 0 5 7" aria-hidden="true" focusable="false" shape-rendering="crispEdges"><path d="M1 0h3v1H1zM0 1h1v1H0zM4 1h1v2H4zM3 3h1v1H3zM2 4h1v1H2zM2 6h1v1H2z"/></svg>
+		<svg class="nf-q nf-q2" viewBox="0 0 5 7" aria-hidden="true" focusable="false" shape-rendering="crispEdges"><path d="M1 0h3v1H1zM0 1h1v1H0zM4 1h1v2H4zM3 3h1v1H3zM2 4h1v1H2zM2 6h1v1H2z"/></svg>
+	</div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+{%- if eggs %}
+{#- 彩蛋：路径为 /v<n>、/v<n>/…，n 去掉前导零（-0 视为 0）后大于 3 或为负数时，才 import 宿主 /assets/egg/host.js，由它按 n 对游戏数取余选一个游戏加载；
+    其他路径不发出任何额外请求。游戏清单由 scripts/eggs.py 在构建时扫描 dist/assets/egg/games/ 生成 #}
+<script>(function(){var m=/^\/v(-?\d+)(?:\/|$)/.exec(location.pathname);if(!m)return;var n=m[1].replace(/^(-?)0+(?=\d)/,'$1');if(n=='-0')n='0';if(n[0]=='-'||+n>3)import('/assets/egg/host.js').then(function(h){h.start(n,{{ eggs|tojson|replace(', ', ',') }})},function(){})})()</script>
+{%- endif %}
+{% endblock %}

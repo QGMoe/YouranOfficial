@@ -1,2 +1,9 @@
 ___*
 __pycache__
+
+# build.py --do 生成的页面（只提交静态资源）
+/dist/*.html
+/dist/v1/*.html
+/dist/v2/*.html
+/dist/sitemap.xml
+/dist/robots.txt

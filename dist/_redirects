@@ -1,0 +1,18 @@
+# Cloudflare Pages 重定向规则（规则从上到下匹配，先匹配的生效）
+# 旧版官网 /old/ 已改为历史版本 /v1/
+/old                    /v1/              301
+/old/                   /v1/              301
+/old/index              /v1/              301
+/old/index.html         /v1/              301
+/old/information        /v1/information   301
+/old/information.html   /v1/information   301
+/old/list               /v1/list          301
+/old/list.html          /v1/list          301
+/old/update             /v1/update        301
+/old/update.html        /v1/update        301
+/old/*                  /v1/:splat        301
+
+# 新版（v3）就在根目录：/v3/… 跳到根目录对应地址
+/v3                     /                 301
+/v3/                    /                 301
+/v3/*                   /:splat           301

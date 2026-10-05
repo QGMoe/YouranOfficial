@@ -1,0 +1,79 @@
+{% extends "v2/_base.html" %}
+
+{% block first_area %}
+	<section class="mods_section">
+		<div class="heading_container">
+			<h2>服务器魔改信息</h2>
+		</div>
+		<p class="center">此页面为新页面，暂时缺少很多信息。</p>
+		<h3 class="center">代码层面魔改模组信息</h3>
+		<div class="table_div">
+			<table border="1">
+				<th>版本</th>
+				<th>魔改时间</th>
+				<th>更新内容</th>
+				<th>下载</th>
+				<!--炼金化学-->
+				<tr>
+					<td colspan="4" class="center"><h5>炼金化学 Alchemistry [<a target="_blank" href="https://github.com/SmashingMods/Alchemistry/blob/1.20.1/LICENSE">GPL-2.0</a>]</h5></td>
+				</tr>
+				<tr>
+					<td colspan="2" class="center" width="30%">原作者：DarkArcana</td>
+					<td colspan="2" class="center">官方链接：<a target="_blank" href="https://github.com/SmashingMods/Alchemistry">https://github.com/SmashingMods/Alchemistry</a></td>
+				</tr>
+				<tr>
+					<td>1.12.2-42</td>
+					<td>2023/7/4</td>
+					<td>基于相同官方版本，修改了CraftTweaks支持的部分源码，使得通过CraftTweaks新增加的化合物能够被本地化处理。</td>
+					<td><a target="_blank" href="https://share.weiyun.com/ODRXpSHz">源码</a><br/>
+						<a target="_blank" href="https://share.weiyun.com/ODRXpSHz">发行包</a></td>
+				</tr>
+				<!--Youranmod-->
+				<tr>
+					<td colspan="4" class="center"><h5>Youranmod</h5></td>
+				</tr>
+				<tr>
+					<td colspan="2" class="center">作者：本服务器</td>
+					<td colspan="2" class="center">官方链接：<a target="_blank" href="#">就是这里</a></td>
+				</tr>
+				{% for ver in mods.yr.vers %}
+					<tr>
+						<td>{{ver.id}}</td>
+						<td>{{ver.time}}</td>
+						<td>{{ver.msg}}</td>
+						<td><a target="_blank" href="https://dl-yr.qg.mo.cn/assets/youranmod/YouranServer-{{ver.id}}.jar">发行包</a></td>
+					</tr>
+				{% endfor %}
+			</table>
+		</div>
+		<h3 class="center">资源包层面魔改信息</h3>
+		<div class="table_div">
+			<table border="1">
+				<th>版本</th>
+				<th>魔改时间</th>
+				<th>更新内容</th>
+				<th>下载</th>
+				<!--CFPA汉化包-->
+				<tr>
+					<td colspan="4" class="center"><h5>Minecraft Mod Language Package [<a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a>]</h5></td>
+				</tr>
+				<tr>
+					<td colspan="2" class="center" width="30%">原作者：Cirno Fans Protection Association</td>
+					<td colspan="2" class="center">官方链接：<a target="_blank" href="https://github.com/CFPAOrg/Minecraft-Mod-Language-Package">https://github.com/CFPAOrg/Minecraft-Mod-Language-Package</a></td>
+				</tr>
+				<tr>
+					<td>20230801</td>
+					<td>2023/08/01</td>
+					<td>优化和新增了一些翻译。</td>
+					<td><a target="_blank" href="https://share.weiyun.com/bOHAYRkP">发行包</a></td>
+				</tr>
+				<tr>
+					<td>20221222</td>
+					<td>2022/12/22</td>
+					<td width="65%">基于<a href="https://github.com/CFPAOrg/Minecraft-Mod-Language-Package/releases/tag/Snapshot-2022082710091661594983" target="_blank">Snapshot-2022082710091661594983</a>官方版本，基于悠然服务器的模组情况定制。</td>
+					<td><a target="_blank" href="https://share.weiyun.com/WJr8ikPq">发行包</a></td>
+				</tr>
+			</table>
+		</div>
+	</section>
+{% endblock %}

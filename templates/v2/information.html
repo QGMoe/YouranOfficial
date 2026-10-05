@@ -1,0 +1,34 @@
+{% extends "v2/_base.html" %}
+
+{% block first_area %}
+	<section class="serverinfo_section">
+		<div class="heading_container">
+			<h2>Minecraft服务器信息</h2>
+		</div>
+		<h2><a name="1">mod、插件列表</a></h2>
+		<div class="table_div">
+			<table border="1">
+				{% include "_partials/info_table.html" %}
+			</table>
+		</div>
+		<h2><a name="2">服务器配置信息</a></h2>
+		<div class="table_div">
+			<table border="1">
+				<tr>
+					<th>服务器类型</th>
+					<td>中国江苏旋律云 VPS</td>
+					<th>内存</th>
+					<td>4.76 GB</td>
+					<th>系统</th>
+					<td>Ubuntu 24</td>
+				</tr>
+				<tr>
+					<th>存储</th>
+					<td>120GB</td>
+					<th>带宽</th>
+					<td>10Mbps（1.25MB/s）</td>
+				</tr>
+			</table>
+		</div>
+	</section>
+{% endblock %}

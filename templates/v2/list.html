@@ -1,3 +1,4 @@
+{#- 归档：v2 的 /v2/list（改版前的 list.html），v1 的 /v1/list 也继承它。只改了 noindex、内部链接前缀，以及对 versions.json 新字段 pending、latest_alias 的兼容；新版 /list 的模板是 list_page.html。 -#}
 {% set eras = {
 	1 : "13Server",
 	2 : "YouranServer"
@@ -6,11 +7,12 @@
 	<head>
 		<title>{{page.title}}</title>
 		<meta charset="utf-8" />
-		<link rel="icon" href="icon.png" />
+		<meta name="robots" content="noindex" />
+		<link rel="icon" href="/icon.png" />
 		<script defer src="https://xn--kbry83c.xn--gr1a.xn--6frz82g/script.js" data-website-id="2f55b11f-0259-4ac8-8228-3519f71e7f66"></script>
 	</head>
 	<body>
-		<h3><a href="{% block return_link %}/{% endblock %}"><返回</a></h3>
+		<h3><a href="{% block return_link %}/v2/{% endblock %}"><返回</a></h3>
 		<h1>客户端所有版本列表</h1>
 		<table border="1">
 			<th>文件名</th>
@@ -22,14 +24,14 @@
 			<th>下载方式</th>
 			{% for ver in versions %}
 				<tr>
-					<td><a {% if ver.link is undefined %}href="https://dl-yr.qg.mo.cn/assets/packs/{{eras[ver.era]}}{{ver.id}}.zip"{% else %}href="{{ver.link}}"{% endif %}>{{eras[ver.era]}}{{ver.id}}.zip</a></td>
+					<td>{% if ver.pending %}{{eras[ver.era]}}{{ver.id}}.zip{% else %}<a {% if ver.link is undefined %}href="https://dl-yr.qg.mo.cn/assets/packs/{{eras[ver.era]}}{{ver.id}}.zip"{% else %}href="{{ver.link}}"{% endif %}>{{eras[ver.era]}}{{ver.id}}.zip</a>{% endif %}</td>
 					<td>{{ver.title}}</td>
 					<td>{{ver.id}}</td>
 					<td>{{ver.size}}</td>
 					<td>{{ver.brief if ver.brief is defined else "更新信息见“服务器更新日志”"}}</td>
 					<td>{{ver.time}}</td>
 					<td>{% if ver.mcbbs_links is defined %}普通客户端下载<br/>{% endif %}
-					点击文件名直接下载
+					{% if not ver.pending %}点击文件名直接下载{% endif %}
 					{% if ver.links is defined %}
 						或<br/>
 						{% for link in ver.links %}
@@ -38,7 +40,7 @@
 					{% endif %}
 					{% if ver.mcbbs_links is defined %}
 						<br/>（新）MCBBS标准客户端下载<br/>
-						{% for link in ver.mcbbs_links %}
+						{% for link in ver.mcbbs_links if not link.latest_alias or ver.id == versions[-1].id %}
 							<a target="_blank" href="{{link.addr}}">{{loop.index}}.{{link.name}}下载</a>{{"<br/>" if not loop.last else ""}}
 						{% endfor %}
 					{% endif %}

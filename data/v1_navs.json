@@ -1,31 +1,31 @@
 [
     {
-        "id":"old/index",
+        "id":"v1/index",
         "name":"主页",
         "link":"index.html",
         "is_direct":true
     },
     {
-        "id":"old/list",
+        "id":"v1/list",
         "name":"整合包版本列表",
         "link":"list.html",
         "is_direct":true
     },
     {
-        "id":"old/information",
+        "id":"v1/information",
         "name":"服务器信息",
         "link":"information.html",
         "is_direct":true
     },
     {
-        "id":"old/update",
+        "id":"v1/update",
         "name":"更新日志",
         "link":"update.html",
         "is_direct":true
     },
     {
         "name":"前往新版官网",
-        "link":"/",
+        "link":"/v2/",
         "is_direct":true
     },
     {

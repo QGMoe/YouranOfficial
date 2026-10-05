@@ -1,33 +1,32 @@
 [
     {
-        "id":"index",
+        "id":"v2/index",
         "name":"主页",
+        "link":"/v2/",
+        "is_direct":true
+    },
+    {
+        "id":"v2/list",
+        "name":"整合包版本列表",
+        "link":"/v2/list.html",
+        "is_direct":true
+    },
+    {
+        "id":"v2/information",
+        "name":"服务器信息",
+        "link":"/v2/information.html",
+        "is_direct":true
+    },
+    {
+        "id":"v2/update",
+        "name":"更新日志",
+        "link":"/v2/update.html",
+        "is_direct":true
+    },
+    {
+        "name":"前往新版官网",
         "link":"/",
         "is_direct":true
-    },
-    {
-        "id":"list",
-        "name":"整合包版本列表",
-        "link":"/list",
-        "is_direct":true
-    },
-    {
-        "id":"information",
-        "name":"服务器信息",
-        "link":"/information",
-        "is_direct":true
-    },
-    {
-        "id":"update",
-        "name":"更新日志",
-        "link":"/update",
-        "is_direct":true
-    },
-    {
-        "name":"网页面板",
-        "link":"https://portal-youran.qingu.moe",
-        "is_direct":true,
-        "outlink":true
     },
     {
         "name":"更多",
@@ -49,9 +48,9 @@
                 "outlink":true
             },
             {
-                "id":"mods",
+                "id":"v2/mods",
                 "name":"魔改信息",
-                "link":"/mods",
+                "link":"/v2/mods.html",
                 "outlink":false
             },
             {
@@ -65,14 +64,25 @@
                 "outlink":true
             },
             {
-                "name":"QQ群",
-                "link":"https://jq.qq.com/?_wv=1027&k=Hwv4w2NU",
+                "name":"返回旧版官网",
+                "link":"/v1/index.html",
+                "outlink":false
+            }
+        ]
+    },
+    {
+        "name":"官网镜像",
+        "is_direct":false,
+        "children":[
+            {
+                "name":"主要",
+                "link":"https://youran.qingu.moe/",
                 "outlink":true
             },
             {
-                "name":"返回旧版官网",
-                "link":"/v2/",
-                "outlink":false
+                "name":"备用",
+                "link":"https://mirror.youranserver.top/",
+                "outlink":true
             }
         ]
     }

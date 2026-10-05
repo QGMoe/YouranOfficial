@@ -1,12 +1,12 @@
 [
     {
         "raw": "CustomSkinLoader",
-        "ver": "14.9",
+        "ver": "14.28",
         "time": "2021年9月16日",
         "comment": "显示正版、外置登录皮肤",
         "mode": "C",
-        "link": "https://www.mcbbs.net/thread-269807-1-1.html",
-        "link_name": "MCBBS"
+        "link": "https://github.com/xfl03/MCCustomSkinLoader",
+        "link_name": "GitHub"
     },
     {
         "raw": "Dynmap（Forge）",
@@ -246,6 +246,7 @@
         "time": "2021年10月22日",
         "comment": "重新生成各类矿物",
         "mode": "B",
+        "deleted": true,
         "link": "https://www.mcmod.cn/class/2373.html"
     },
     {
@@ -254,6 +255,7 @@
         "time": "2021年10月22日",
         "comment": "熔炉性能优化前置",
         "mode": "B",
+        "deleted": true,
         "link": "https://www.mcmod.cn/class/1023.html"
     },
     {
@@ -278,7 +280,7 @@
     {
         "raw": "Carry On",
         "trans": "搬运",
-        "ver": "1.12.6.20",
+        "ver": "1.12.7.23",
         "time": "2021年10月22日",
         "comment": "可以搬东西了！",
         "mode": "B",
@@ -288,10 +290,10 @@
     {
         "raw": "Just Enough Items [JEI]",
         "trans": "JEI物品管理器",
-        "ver": "4.15.0.297",
+        "ver": "4.16.5.1030",
         "time": "2021年10月22日",
         "comment": "查看配方",
-        "mode": "C",
+        "mode": "Y",
         "in_pack": true,
         "link": "https://www.mcmod.cn/class/459.html"
     },
@@ -376,7 +378,7 @@
     {
         "raw": "SpongeForge [SF]",
         "trans": "海绵端插件支持Forge版",
-        "ver": "2838-7.3.0",
+        "ver": "7.4.7",
         "time": "2021年10月29日",
         "comment": "安装插件",
         "mode": "Y",
@@ -400,6 +402,7 @@
         "time": "2021年10月31日",
         "comment": "替代TrixtaLogin，更好的登录插件",
         "mode": "P",
+        "deleted": true,
         "link": "https://ore.spongepowered.org/AnhKagi/Authentic",
         "link_name": "SPONGE"
     },
@@ -416,7 +419,7 @@
     {
         "raw": "Dynamic Trees [DT]",
         "trans": "动态的树/有活力的树",
-        "ver": "0.9.25",
+        "ver": "0.9.27",
         "time": "2021年11月04日",
         "comment": "更好的树",
         "mode": "B",
@@ -603,7 +606,7 @@
     },
     {
         "raw": "LuckPerms",
-        "ver": "5.3.0",
+        "ver": "5.3.98",
         "time": "2021年12月04日",
         "comment": "更好的权限管理",
         "mode": "P",
@@ -638,14 +641,15 @@
         "comment": "优化匠魂",
         "mode": "B",
         "in_pack": true,
+        "deleted": true,
         "link": "https://www.mcmod.cn/class/5049.html"
     },
     {
         "raw": "MixinBooter",
-        "ver": "2.0",
+        "ver": "10.7",
         "time": "2021年12月05日",
         "comment": "匠魂矿辞缓存前置",
-        "mode": "Y",
+        "mode": "C",
         "in_pack": true,
         "link": "https://www.mcmod.cn/class/4010.html"
     },
@@ -686,8 +690,9 @@
         "comment": "修复Log4J安全漏洞",
         "mode": "B",
         "in_pack": true,
-        "link": "https://www.mcbbs.net/thread-1283228-1-1.html",
-        "link_name": "MCBBS"
+        "deleted": true,
+        "link": "https://github.com/ChloePrime/fix4log4j",
+        "link_name": "GitHub"
     },
     {
         "raw": "Universe Guard",
@@ -760,7 +765,7 @@
     {
         "raw": "MrCrayfish's Furniture Mod [CFM]",
         "trans": "MrCrayfish 的家具",
-        "ver": "6.3.1",
+        "ver": "6.3.2",
         "time": "2022年3月18日",
         "comment": "装饰建筑",
         "mode": "B",
@@ -775,6 +780,7 @@
         "comment": "查找服务器卡顿原因",
         "mode": "Y",
         "in_pack": false,
+        "deleted": true,
         "link": "https://www.mcmod.cn/class/1995.html"
     },
     {
@@ -793,8 +799,8 @@
         "time": "2022年3月22日",
         "comment": "更好地禁用物品",
         "mode": "P",
-        "link": "https://www.mcbbs.net/thread-829480-1-1.html",
-        "link_name": "MCBBS"
+        "link": "https://github.com/EpicBanItemTeam/EpicBanItem",
+        "link_name": "GitHub"
     },
     {
         "raw": "Virtual Chest",
@@ -803,8 +809,8 @@
         "time": "2022年3月22日",
         "comment": "箱子GUI",
         "mode": "P",
-        "link": "https://www.mcbbs.net/thread-679260-1-1.html",
-        "link_name": "MCBBS"
+        "link": "https://github.com/EpicBanItemTeam/VirtualChest",
+        "link_name": "GitHub"
     },
     {
         "raw": "PlaceholderAPI",
@@ -818,7 +824,7 @@
     {
         "raw": "spark",
         "trans": "火花",
-        "ver": "1.8.16-sponge7",
+        "ver": "1.10.186",
         "time": "2022年3月21日",
         "comment": "服务端性能分析",
         "mode": "P",
@@ -967,5 +973,14 @@
         "mode": "B",
         "in_pack": true,
         "link": "https://www.mcmod.cn/class/7292.html"
+    },
+    {
+        "raw": "YouranAuth",
+        "ver": "0.5.3",
+        "time": "2026年10月1日",
+        "comment": "自研的帐号系统插件，替代 Authentic",
+        "mode": "P",
+        "link": "https://portal-youran.qingu.moe",
+        "link_name": "网页面板"
     }
 ]
