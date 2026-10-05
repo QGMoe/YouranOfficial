@@ -1,4 +1,4 @@
-// 矿物合成（2048 变体）— 404 彩蛋游戏
+// 「合成大矿物」（2048 变体）— 404 彩蛋游戏
 const ID = 'merge';
 const P = 'egg-merge';
 const WIN = 8; // 钻石

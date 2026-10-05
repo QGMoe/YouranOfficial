@@ -31,7 +31,7 @@ const BASE = process.env.BASE || 'http://localhost:8137';
   ok('经宿主挂载（ctx.t 来自 texts/breach.js）：按钮、状态行、读屏名称、提示与内置文案逐字相同，每一条文案经 ctx.t 取出都与内置原文相同', JSON.stringify(host.ready) === JSON.stringify(builtin.ready) && host.hint === builtin.hint && host.ready.btn === '开始' && host.keys > 100 && !host.keyDiff.length && !builtin.keyDiff.length, JSON.stringify([host.keys, host.keyDiff, builtin.keyDiff, host.ready, builtin.ready]));
   ok('宿主挂载无报错、无缺文案警告', !host.errs.length && !host.warns.some(w => /文案|missing|缺/.test(w)), JSON.stringify([host.errs, host.warns]));
   // 改了文案文件：游戏里跟着变（游戏名、按钮）
-  const mod = await viaHost(async (r) => { const res = await r.fetch(); let body = await res.text(); body = body.replace("name: '（待服主填写）'", "name: '测试名'").replace("start: '开始'", "start: '开工'").replace("cause_lava: '被岩浆吞没'", "cause_lava: '被岩浆烫到'"); r.fulfill({ response: res, body }); });
+  const mod = await viaHost(async (r) => { const res = await r.fetch(); let body = await res.text(); body = body.replace(/name: '[^']*'/, "name: '测试名'").replace("start: '开始'", "start: '开工'").replace("cause_lava: '被岩浆吞没'", "cause_lava: '被岩浆烫到'"); r.fulfill({ response: res, body }); });
   ok('改文案文件后游戏里跟着变（按钮、死因、游戏名来自宿主）', mod.ready.btn === '开工' && /被岩浆烫到/.test(mod.end) && mod.name === '测试名', JSON.stringify([mod.ready.btn, mod.name, mod.end.slice(0, 40)]));
   // 文案文件 404：宿主用模块内置的 texts，文字与迁移前相同、游戏照常
   const miss = await viaHost((r) => r.fulfill({ status: 404, body: 'not found' }));

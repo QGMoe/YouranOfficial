@@ -16,8 +16,8 @@
 | `tools/eggs/harness.html` | 调试页（不部署）：选任意游戏、改 n、切主题、切 reducedMotion、不加载文案文件（检查内置文案）、反复 mount / unmount |
 | `tools/eggs/CONTRACT.md` | 游戏接口约定（必须遵守） |
 
-现有游戏共 8 个（按文件名顺序，下标从 0 开始；/v8 → 0、/v15 → 7、/v-1 → 7）：0 Steve 跑酷 runner、1 redstone、2 prospect、3 creeper、4 merge、5 craft、6 fishing、7 挖穿 breach。
-挖穿是压缩构建产物，可读源码、构建脚本与测试在 `tools/eggs/breach/`（见其中 `tools/build.mjs` 开头的说明）。
+现有游戏共 8 个（按文件名顺序，下标从 0 开始；/v8 → 0、/v15 → 7、/v-1 → 7）：0 蹦蹦Steve（runner）、1 红石电路之谜（redstone）、2 ！？探矿？！（prospect）、3 Creeper?（creeper）、4 合成大矿物（merge）、5 合成猜谜（craft）、6 钓鱼佬（fishing）、7 矿难（breach）。
+矿难（breach）是压缩构建产物，可读源码、构建脚本与测试在 `tools/eggs/breach/`（见其中 `tools/build.mjs` 开头的说明）。
 
 ## 新增一个游戏
 
@@ -36,7 +36,7 @@
 ## 种子：谜题类用版本号，反应类每局随机
 - **谜题类**（关卡/谜题，"同一版本号同一关"有分享价值）：地图由 `ctx.seed` 决定，同一个 n 永远是同一关。目前是 02-redstone、03-prospect、06-craft、08-breach（挖穿）。
 - **反应类**（跑酷、打怪、钓鱼这类靠反应的，以及 05-merge——固定出块序列可以被背下来）：每一局（包括第一局和每次重开）的随机序列都用 `crypto.getRandomValues` 取新种子，再喂给游戏自己的确定性 PRNG。版本号仍然决定难度档（`cycle mod P`）和外观（生物群系、负数时的下界/镜像等），只是障碍、出怪、咬钩时间、出块这类序列不再由 `ctx.seed` 决定。目前是 01-runner、04-creeper、05-merge、07-fishing。
-- 例外：03-prospect（探矿）的棋盘尺寸随设备不同（手机固定 9×9，桌面 12×10～16×12），同一个 n 在手机和桌面上是不同的图。这样保留：探矿每局本来就不同（雷在第一次挖之后才布置，"再玩一局"也会换种子）。这条例外只适用于探矿；02-redstone 等其他谜题类必须做到同一个 n 在任何设备上都是同一关（红石电路的盘面宽度固定不超过 8 列，只按屏幕缩放格子大小）。
+- 例外：03-prospect（！？探矿？！）的棋盘尺寸随设备不同（手机固定 9×9，桌面 12×10～16×12），同一个 n 在手机和桌面上是不同的图。这样保留：探矿每局本来就不同（雷在第一次挖之后才布置，"再玩一局"也会换种子）。这条例外只适用于探矿；02-redstone 等其他谜题类必须做到同一个 n 在任何设备上都是同一关（红石电路的盘面宽度固定不超过 8 列，只按屏幕缩放格子大小）。
 - 反应类的确定性测试：地址带 `?egg-test&egg-seed=<整数>` 时改用由它派生的固定种子（01-runner 用 `root.__eggTest.start(seed)`），正常游玩不受影响。
 
 ## 难度档数互质
@@ -57,6 +57,6 @@
 - 模块加载失败、没有 `mount`、`mount` 抛错时，游戏区块被移除，页面就是普通 404。
 - 文案：`start()` 同时发出 `texts/common.js`、游戏模块、`texts/<id>.js` 三个请求，等 `common.js`（失败则用 host.js 里的 `COMMON`）后放出区块；`mountGame()` 由游戏文件名推出文案地址（`games/NN-id.js` → `texts/id.js`），与模块一起加载，失败时 `console.warn` 一次并用模块的 `texts`。`ctx.t` / `ctx.tNodes` 的语义见 CONTRACT.md「文案」，实现为 host.js 导出的 `translator()`（另导出 `fill`、`lookup`、`loadTexts`、`textsUrlFor` 供调试页与测试用）。
 
-## 挖穿（08-breach）的文案
-挖穿的全部游戏内文字已在 `texts/breach.js`（9104285），与其他游戏相同：改 `texts/breach.js` 即可，不需要重新构建。
+## 矿难（08-breach）的文案
+矿难的全部游戏内文字已在 `texts/breach.js`（9104285），与其他游戏相同：改 `texts/breach.js` 即可，不需要重新构建。
 构建时（`tools/eggs/breach/tools/build.mjs`）会把 `texts/breach.js` 原样内联为模块的内置 `texts`，只在文案文件加载失败时兜底；改了 `texts/breach.js` 后重新构建一次，可让内置兜底与之保持一致。

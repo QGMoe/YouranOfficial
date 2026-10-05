@@ -1,4 +1,4 @@
-// G5 合成台猜谜（Wordle 式）—— 404 彩蛋游戏 id: craft
+// 「合成猜谜」（Wordle 式）—— 404 彩蛋游戏 id: craft
 const P = 'egg-craft-';
 const MAX_TRIES = 6;
 

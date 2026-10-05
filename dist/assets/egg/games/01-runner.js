@@ -1,4 +1,4 @@
-/* 404 彩蛋游戏「Steve 跑酷」（runner）：遵守 tools/eggs/README.md 的接口约定，由宿主 /assets/egg/host.js 按需加载。
+/* 404 彩蛋游戏「蹦蹦Steve」（runner）：遵守 tools/eggs/README.md 的接口约定，由宿主 /assets/egg/host.js 按需加载。
  * 玩法：Steve 风格的方块小人自动向右跑，按空格 / ↑ / W / 回车或点按画面跳跃，躲开石块堆和岩浆坑；跑得越远分数越高，速度逐渐加快。
  * 全部图形用 Canvas 逐像素自绘（不使用任何官方素材或外部资源），配色跟随站点主题。没有依赖任何库。 */
 const CSS = '' +

@@ -1,4 +1,4 @@
-// 探矿：扫雷变体。纯回合制，无 rAF。
+// 「！？探矿？！」：扫雷变体。纯回合制，无 rAF。
 const ORES = [null, ['coal', 5], ['iron', 10], ['gold', 20], ['diamond', 50]];   // [矿物键（名字见 texts/prospect.js 的 ores）, 分值]
 
 function rng(s) {

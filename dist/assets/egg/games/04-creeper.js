@@ -1,4 +1,4 @@
-// G3 打苦力怕 — whack-a-creeper. Self-contained ES module, no globals, no external resources.
+// 「Creeper?」 — whack-a-creeper. Self-contained ES module, no globals, no external resources.
 const P = 'egg-creeper-';
 const CELL = 24, GAP = 4, PAD = 4, LW = PAD * 2 + CELL * 3 + GAP * 2; // 88 logical px
 const STEP = 1000 / 60, CAP = 100, RISE = 8, SINK = 6, HURT = 12, BOOM = 24, SPARK = 8, TOP = 18;

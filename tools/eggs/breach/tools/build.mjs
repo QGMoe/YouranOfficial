@@ -5,7 +5,7 @@
 import fs from 'fs';
 const dir = new URL('../', import.meta.url);
 const parts = ['engine.js', 'core.js', 'scene.js', 'render2d.js', 'render3d.js', 'audio.js', 'game.js'].filter(f => fs.existsSync(new URL('src/' + f, dir)));
-let out = '/* 404 彩蛋游戏「挖穿」（breach）。由 tools/build.mjs 从 src/ 生成，请勿直接编辑。原创像素/体素画，不使用任何官方素材。 */\n';
+let out = '/* 404 彩蛋游戏「矿难」（breach）。由 tools/build.mjs 从 src/ 生成，请勿直接编辑。原创像素/体素画，不使用任何官方素材。 */\n';
 for (const p of parts) out += fs.readFileSync(new URL('src/' + p, dir), 'utf8') + '\n';
 out += 'export const _engine = fluidEngine();\nexport const _core = breachCore(_engine);\n';
 
@@ -22,6 +22,6 @@ fs.writeFileSync(new URL('08-breach.src.js', dir), out);
 const DIST = new URL('../../../dist/assets/egg/games/08-breach.js', dir);
 // 发布用：terser 压缩（只用于构建，不随站点发布）；Worker 依赖函数 toString，所以这三个函数必须自包含（不引用外层变量）
 const { minify } = await import(process.env.TERSER ? new URL('main.js', 'file://' + process.env.TERSER.replace(/\/?$/, '/')).href : new URL('node_modules/terser/main.js', dir).href);
-const min = await minify(out, { module: true, compress: { passes: 2, keep_fargs: true }, mangle: true, format: { comments: /^!/, preamble: '/* 404 彩蛋游戏「挖穿」（breach）。由可读源码 src/*.js 经 tools/build.mjs（terser）构建。原创像素/体素画，不使用任何官方素材。 */' } });
+const min = await minify(out, { module: true, compress: { passes: 2, keep_fargs: true }, mangle: true, format: { comments: /^!/, preamble: '/* 404 彩蛋游戏「矿难」（breach）。由可读源码 src/*.js 经 tools/build.mjs（terser）构建。原创像素/体素画，不使用任何官方素材。 */' } });
 fs.writeFileSync(DIST, min.code);
 console.log('built', out.length, 'bytes readable,', min.code.length, 'bytes minified', parts.join(' '));
