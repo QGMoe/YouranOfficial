@@ -338,16 +338,19 @@ function mount(root, host) {
     return P.stage === -2;
   }
   function canStand() { return !!(P && P.down && P.down.ph === 'lie' && P.down.ready && state === 'run' && !P.die && P.drown < 0 && !P.use); }
-  function actNow() { return canStand() ? 'stand' : canTorch() ? 'torch' : ''; }
+  // 动作键（Shift / 触屏动作按钮）的优先级：爬起来 > 用火把取暖 > 取火。三者互斥：爬起来要求倒下且能起身，取暖要求火把点着，取火要求火把灭着且没倒下，
+  // 所以"火把灭着时不可能取暖"，不会冲突；这里的顺序只是兜底。
+  function actNow() { return canStand() ? 'stand' : canTorch() ? 'torch' : relightTarget() >= 0 ? 'relight' : ''; }
+  var holdK = 0, holdB = 0;   // Shift 键 / 触屏动作按钮是否按着（取火要按住；每次挂载各一份）
   function actPress() {
     var a = actNow(); if (!a) return false;
     if (a === 'stand') { P.down.ph = 'stand'; P.down.t = 0; SND.climbOut(); }
-    else { P.use = { t: 0, rescue: !!P.down, mode: 1 }; P.vx = P.vz = 0; SND.torchOn(); }
-    return true;
+    else if (a === 'torch') { P.use = { t: 0, rescue: !!P.down, mode: 1 }; P.vx = P.vz = 0; SND.torchOn(); }
+    return true;   // 'relight'：只要按住，进度由 relightStep 推进
   }
   // 火把烧完 / 被浇灭 / 中断：火灭了，手里留着一根没点着的木棍（没有随身的光、不能取暖），可以在墙上点着的火把上重新点着（relightStep）
   function torchEnd(why) {
-    if (!P.use) return; P.use = null; P.torch = false;
+    if (!P.use) return; P.use = null; P.torch = false; holdK = holdB = 0;   // 按键状态清零：取暖时按着的 Shift 不算接着取火，要重新按
     if (why === 'out') SND.poof(0, 0.9); else SND.poof(0, 0.45);
   }
   function douse(bc, climbV) {
@@ -355,24 +358,30 @@ function mount(root, host) {
     var hx = climbV ? lv.ladder.x : bc.x, hz = climbV ? lv.ladder.z : bc.z, hy = Math.min(sc.Y - 1, Math.floor(P.y + 0.01) + 1);
     if (sc.mix.length < 32) sc.mix.push({ i: sc.idx(hx, hy, hz), t: 0 });
   }
-  /* 重新点火（服主）：与挖奇怪的矿石同样的操作——面朝一支点着的墙上火把、按住朝它的方向键（触屏：摇杆 / 方向键），够得着（约半格内）、不隔岩石，
-   * 约 1.5 s 点着，人物脚下出现进度条。松开 / 走开 / 转向 → 进度清零；那支墙上火把在这期间被水浇灭、或自己脚下这格水 > 5 层 → 点不着。
-   * 取火不消耗墙上的火把，次数不限。 */
+  /* 重新点火（服主）：复用取暖的操作——手里火把灭着时，够得着一支点着的墙上火把（约半格内、不隔岩石），提示「按住 Shift 取火」（触屏：动作按钮写「取火」），
+   * 按住约 1.5 s 点着，人物原地站住，脚下出现进度条。松开 / 走开（有方向输入）→ 进度清零；那支墙上火把在这期间被水浇灭、或自己脚下这格水 > 5 层 → 点不着。
+   * 方向键 / 摇杆只管走路，不再朝着火把就取火。取火不消耗墙上的火把，次数不限。 */
   var RELIGHT_T = 1.5;
   function wallTorchPos(x, z) { return [x + 0.5 + (((x + z) & 1) ? 0.22 : -0.22), z + 0.5]; }   // 与 3D 渲染器里墙上火把的位置一致
-  function relightStep(dt, sx, sz, tx, tz, b) {
-    var R0 = P.relight, ok = !P.torch && ((sx && !sz) || (sz && !sx)) && P.drown < 0 && !P.die && !P.down && !P.use, tgt = -1, tp = null;
-    if (ok) for (var k = 0; k < 2 && tgt < 0; k++) { var cx = tx + (k ? sx : 0), cz = tz + (k ? sz : 0);
+  // 能取火的墙上火把（格下标，没有则 -1）：手里火把灭着、站着能操作、自己没泡在深水里；在身边 3×3 格里找够得着（距离 ≤ 0.62）的，取最近的一支
+  function relightTarget() {
+    if (!P || P.torch || P.use || state !== 'run' || P.die || P.drown >= 0 || P.anim || fade.then || P.qte > 0 || P.grip >= 0 || P.mode !== 'top' || P.down || P.pit >= 0) return -1;
+    var b = base(), tx = Math.floor(P.x), tz = Math.floor(P.z), tgt = -1, best = 1e9;
+    if (watQ(tx, b + 1, tz) > 5) return -1;   // 自己泡在深水里：点不着
+    for (var oz = -1; oz <= 1; oz++) for (var ox = -1; ox <= 1; ox++) { var cx = tx + ox, cz = tz + oz;
       if (cx < 0 || cz < 0 || cx >= W || cz >= M.H || lv.t[cz * W + cx] === 0 || sc.mat[sc.idx(cx, b + 1, cz)] !== M_TORCH) continue;
-      var p0 = wallTorchPos(cx, cz), vx = p0[0] - P.x, vz = p0[1] - P.z, dd = Math.hypot(vx, vz);
-      if (dd > 0.62) continue; if (dd > 0.2 && (vx * sx + vz * sz) / dd < 0.55) continue;   // 够得着，且大致朝着它
-      tgt = cz * W + cx; tp = p0; }
-    if (tgt >= 0 && watQ(tx, b + 1, tz) > 5) tgt = -1;   // 自己泡在深水里：点不着
+      var p0 = wallTorchPos(cx, cz), dd = Math.hypot(p0[0] - P.x, p0[1] - P.z);
+      if (dd <= 0.62 && dd < best) { best = dd; tgt = cz * W + cx; } }
+    return tgt;
+  }
+  function relightStep(dt, moving) {
+    var R0 = P.relight, tgt = (holdK || holdB) && !moving ? relightTarget() : -1;
     if (tgt < 0) { P.relight = null; return; }
     if (!R0 || R0.i !== tgt) R0 = P.relight = { i: tgt, t: 0 };
+    var tp = wallTorchPos(tgt % W, (tgt / W) | 0);
     P.rot = Math.atan2(tp[1] - P.z, tp[0] - P.x); P.vx = P.vz = 0;
     R0.t += dt;
-    if (R0.t >= RELIGHT_T) { P.relight = null; P.torch = true; P.relit++; SND.torchOn(); }
+    if (R0.t >= RELIGHT_T) { P.relight = null; P.torch = true; P.relit++; holdK = holdB = 0; SND.torchOn(); }
   }
   /* ---------- 重度：倒下 → 爬 → 急救 / 结束 ---------- */
   function tryCollapse() {
@@ -589,7 +598,8 @@ function mount(root, host) {
       if (P.grip >= 0 && !P.anim) { P.grip -= dt; if (P.grip <= 0) dropDown(); }
     } else {
       var rdx = kx, rdz = kz;
-      if (P.relight) { dx = dz = 0; }   // 正在点火：站住（方向键只用来判断是否还朝着墙上的火把）
+      if (P.relight && (dx || dz)) P.relight = null;   // 取火时有方向输入 = 走开：中断
+      if (P.relight) { dx = dz = 0; }   // 正在取火：站住
       if (dx && dz && !analog) { dx *= 0.7071; dz *= 0.7071; }
       var f0 = body(tx, tz, P.y);
       var sp = 4.3 * (P.buff > 0 ? 1.3 : 1) * slowK() * (f0.puddle ? 0.55 : 1) * Math.max(0.35, 1 - 0.05 * (f0.lo + f0.hi));
@@ -608,7 +618,7 @@ function mount(root, host) {
       if (canPit(tx, tz) && Math.abs(P.x - tx - 0.5) < 0.3 && Math.abs(P.z - tz - 0.5) < 0.3) { P.hold = 0; SND.fall(); animTo(tx + 0.5, b, tz + 0.5, 0.18, null); P.pit = ti; enterPit(ti); }
       if (lv.t[ti] === 3 && (dx || dz)) { P.lad += dt; if (P.lad > C.LAD_HOLD) { P.lad = 0; beginFade(startClimb); } } else P.lad = 0;
       mineStep(dt, rdx, rdz, tx, tz, b);
-      relightStep(dt, rdx, rdz, tx, tz, b);
+      relightStep(dt, !!(dx || dz));
     }
     if (P.pit >= 0 || P.anim || P.mode !== 'top' || P.down || P.use) { P.mineT = 0; P.mineAt = -1; P.relight = null; }
     P.pick = Math.max(0, P.pick - dt * 3); if (P.mineAt >= 0) P.pick = 1;
@@ -1046,7 +1056,7 @@ function mount(root, host) {
     var a = actNow(), y0 = 206;
     if (P.use) { var uq = P.use.rescue ? Math.min(1, (P.th.Tc - 26) / (TH.WARM_TO - 26)) : Math.min(1, P.use.t / USE_T); hg.fillStyle = 'rgba(0,0,0,.6)'; hg.fillRect(120, y0, 80, 10); torchIcon(123, y0 - 1, true); hg.fillStyle = 'rgba(255,255,255,.18)'; hg.fillRect(130, y0 + 3, 66, 4); hg.fillStyle = P.use.mode === 2 ? '#c9c2b8' : '#ffb03a'; hg.fillRect(130, y0 + 3, Math.round(66 * uq), 4); }
     if (P.down && P.down.ph === 'lie' && Math.abs(st) >= 3 && !P.die) { var wq = P.down.win / P.down.winMax; hg.fillStyle = 'rgba(0,0,0,.6)'; hg.fillRect(110, y0 + 12, 100, 6); hg.fillStyle = P.down.rescue ? '#ffd25a' : st < 0 ? '#7fb8f0' : '#f08060'; hg.fillRect(112, y0 + 14, Math.round(96 * wq), 2); }
-    hudText.length = 0; if (a && !COARSE && !P.use) hudText.push(tx(a === 'stand' ? 'prompt.stand_key' : 'prompt.torch_key'));
+    hudText.length = 0; if (a && !COARSE && !P.use) hudText.push(tx(a === 'stand' ? 'prompt.stand_key' : a === 'relight' ? 'prompt.relight_key' : 'prompt.torch_key'));
     var hint = function (txt, y, col) { hudText.push(txt); hg.font = 'bold 9px system-ui, sans-serif'; hg.textAlign = 'center'; var lw2 = Math.ceil(hg.measureText(txt).width) + 12; hg.fillStyle = 'rgba(0,0,0,.66)'; hg.fillRect(160 - lw2 / 2, y, lw2, 13); hg.fillStyle = col || '#ffe9b0'; hg.fillText(txt, 160, y + 2); hg.textAlign = 'left'; hg.font = '9px ui-monospace, Menlo, Consolas, monospace'; };
     if (P.use) hint(tx(P.use.rescue ? 'prompt.warming_rescue' : 'prompt.warming'), y0 - 16, '#ffd59a');   // 引导时的提示：一动就中断（火把照样烧完）
     // 第一次出现「用火把取暖」时的小提示（每次挂载一次，约 5 s）
@@ -1055,7 +1065,7 @@ function mount(root, host) {
     // 重新点火：人物脚下的进度条
     if (P.relight && P.mode === 'top') { var rq = Math.min(1, P.relight.t / RELIGHT_T), rx = Math.round(Math.max(20, Math.min(300, qPos[0]))) - 17, ry = Math.round(Math.min(228, qPos[1] + 12));
       hg.fillStyle = 'rgba(0,0,0,.62)'; hg.fillRect(rx, ry, 34, 8); torchIcon(rx + 2, ry - 2, rq >= 0.5); hg.fillStyle = 'rgba(255,255,255,.18)'; hg.fillRect(rx + 8, ry + 2, 24, 4); hg.fillStyle = '#ffb03a'; hg.fillRect(rx + 8, ry + 2, Math.round(24 * rq), 4); }
-    if (a && !COARSE && !P.use) { var lab = tx(a === 'stand' ? 'prompt.stand_key' : 'prompt.torch_key'); hg.font = 'bold 9px system-ui, sans-serif'; hg.textAlign = 'center'; var lw = Math.ceil(hg.measureText(lab).width) + 12;
+    if (a && !COARSE && !P.use) { var lab = tx(a === 'stand' ? 'prompt.stand_key' : a === 'relight' ? 'prompt.relight_key' : 'prompt.torch_key'); hg.font = 'bold 9px system-ui, sans-serif'; hg.textAlign = 'center'; var lw = Math.ceil(hg.measureText(lab).width) + 12;
       hg.fillStyle = 'rgba(0,0,0,.66)'; hg.fillRect(160 - lw / 2, y0 - 16, lw, 13); hg.fillStyle = '#ffe9b0'; hg.fillText(lab, 160, y0 - 14); hg.textAlign = 'left'; hg.font = '9px ui-monospace, Menlo, Consolas, monospace'; }
   }
   // 体温的画面效果：中度失温起画面发灰（CSS 滤镜，只作用于游戏画面，不影响 HUD）；重度失温 / 失温结束：四周结霜、整体发灰蓝；
@@ -1464,15 +1474,15 @@ function mount(root, host) {
     if (scoreAnim) { e.preventDefault(); if (!e.repeat) finishScoreAnim(); return; }   // 计分动画中：任何键只跳过动画，不开新局
     var k = KEYMAP[e.key];
     if (k) { e.preventDefault(); var go = canStartBy(k, e.repeat); keys[k] = 1; if (go) startPlay(); }
-    else if (e.key === 'Shift') { if (!e.repeat && state === 'run' && P && actPress()) e.preventDefault(); }   // 体温：用火把取暖 / 爬起来（不开局、不翻页）
+    else if (e.key === 'Shift') { if (!e.repeat && state === 'run' && P) { if (actNow() === 'relight') holdK = 1; if (actPress()) e.preventDefault(); } }   // 体温：用火把取暖 / 爬起来 / 取火（按住；不开局、不翻页）
     else if (e.key === ' ' && state === 'run' && P && P.qte > 0) { e.preventDefault(); if (!e.repeat) qteHit(); }   // 深坑 QTE：只认新按下的空格；不开局、不翻页
     else if ((e.key === ' ' || e.key === 'Enter') && e.target === canvas && state !== 'run' && state !== 'climb') { e.preventDefault(); if (!endBusy()) startPlay(); }
     else if (e.key === ' ' && e.target === canvas) e.preventDefault();   // 游戏进行中画布有焦点时，空格不滚动页面
   }, { signal: signal });
-  wrap.addEventListener('keyup', function (e) { var k = KEYMAP[e.key]; if (k) { keys[k] = 0; latch[k] = 0; } }, { signal: signal });
-  window.addEventListener('keyup', function (e) { var k = KEYMAP[e.key]; if (k) latch[k] = 0; }, { signal: signal });   // 焦点不在游戏里时松开也算
-  window.addEventListener('blur', function () { latch.u = latch.d = latch.l = latch.r = latch.j = 0; }, { signal: signal });
-  canvas.addEventListener('blur', function () { keys.u = keys.d = keys.l = keys.r = 0; }, { signal: signal });   // latch 不清：焦点移到结算面板后，松开按键的 keyup 仍会冒泡到 wrap
+  wrap.addEventListener('keyup', function (e) { var k = KEYMAP[e.key]; if (k) { keys[k] = 0; latch[k] = 0; } else if (e.key === 'Shift') holdK = 0; }, { signal: signal });
+  window.addEventListener('keyup', function (e) { var k = KEYMAP[e.key]; if (k) latch[k] = 0; else if (e.key === 'Shift') holdK = 0; }, { signal: signal });   // 焦点不在游戏里时松开也算
+  window.addEventListener('blur', function () { holdK = holdB = 0; latch.u = latch.d = latch.l = latch.r = latch.j = 0; }, { signal: signal });
+  canvas.addEventListener('blur', function () { holdK = 0; keys.u = keys.d = keys.l = keys.r = 0; }, { signal: signal });   // latch 不清：焦点移到结算面板后，松开按键的 keyup 仍会冒泡到 wrap
   wrap.querySelectorAll('.egg-breach-dpad button').forEach(function (b2) {
     var dd = b2.getAttribute('data-d');
     var on = function (e) { e.preventDefault(); if (scoreAnim) { finishScoreAnim(); skippedAt = performance.now(); return; } var go = canStartBy(dd, false); keys[dd] = 1; b2.classList.add('on'); try { b2.setPointerCapture(e.pointerId); } catch (x) {} if (go) startPlay(); };
@@ -1515,10 +1525,12 @@ function mount(root, host) {
   function syncAct() {
     var a = state === 'run' && P ? actNow() || (P.use ? 'busy' : '') : '', vis = a && getComputedStyle(padEl).display !== 'none';   // busy：取暖引导中，按钮上写「取暖中…别动」
     if (!vis) { if (actKind) { actKind = ''; actBtn.hidden = true; } return; }
-    if (a !== actKind) { actKind = a; var lab = tx(a === 'stand' ? 'act.stand' : a === 'busy' ? (P.use.rescue ? 'act.warming_rescue' : 'act.warming') : 'act.torch'); actBtn.classList.toggle('busy', a === 'busy'); actBtn.querySelector('span').textContent = lab; actBtn.setAttribute('aria-label', lab); actBtn.querySelector('svg').style.display = a === 'stand' ? 'none' : ''; actBtn.hidden = false; actPos = ''; }
+    if (a !== actKind) { actKind = a; var lab = tx(a === 'stand' ? 'act.stand' : a === 'relight' ? 'act.relight' : a === 'busy' ? (P.use.rescue ? 'act.warming_rescue' : 'act.warming') : 'act.torch'); actBtn.classList.toggle('busy', a === 'busy'); actBtn.querySelector('span').textContent = lab; actBtn.setAttribute('aria-label', lab); actBtn.querySelector('svg').style.display = a === 'stand' ? 'none' : ''; actBtn.hidden = false; actPos = ''; }
     placeAct();
   }
-  actBtn.addEventListener('pointerdown', function (e) { e.preventDefault(); e.stopPropagation(); actPress(); syncAct(); }, { signal: signal });
+  actBtn.addEventListener('pointerdown', function (e) { e.preventDefault(); e.stopPropagation(); if (state === 'run' && P && actNow() === 'relight') holdB = 1; actPress(); syncAct(); }, { signal: signal });
+  ['pointerup', 'pointercancel', 'lostpointercapture'].forEach(function (n) { actBtn.addEventListener(n, function () { holdB = 0; }, { signal: signal }); });
+  window.addEventListener('pointerup', function () { holdB = 0; }, { signal: signal }); window.addEventListener('pointercancel', function () { holdB = 0; }, { signal: signal });   // 手指滑出按钮再松开也算松开
   actBtn.addEventListener('click', function (e) { e.preventDefault(); }, { signal: signal });   // 全屏切换：尺寸由 ResizeObserver 跟踪，这里再补一次
   ctlBtn.addEventListener('click', function () { var m = padEl.getAttribute('data-mode') === 'joy' ? 'pad' : 'joy'; ctlMode(m); try { host.storage.set('ctl', m); } catch (x) {} }, { signal: signal });
   btn.addEventListener('click', startPlay, { signal: signal });
@@ -1584,6 +1596,7 @@ function mount(root, host) {
       down: D ? { ph: D.ph, kind: D.kind, ang: D.ang, win: D.win, winMax: D.winMax, ready: D.ready, pr: D.pr, rescue: !!D.rescue, x: P.x, z: P.z } : null, die: P.die ? { kind: P.die.kind, t: P.die.t } : null, warm: P.warm, trend: P.trend, dT: +P.dT.toFixed(4), depth: P.depth, stuck: P.stuck, relit: P.relit, act: actNow(), slide: P.slide, cause: P.cause, layer: P.layer || '', light: is3D ? null : plView.r, filter: canvas.style.filter }; },
     setTemp: function (Tc, Ts, wet) { P.th.Tc = Tc; P.th.Ts = Ts != null ? Ts : Tc - 3; if (wet != null) P.th.wet = wet; P.stage = C.stageOf(Tc); },
     thermoOn: function (v) { thermoOn = !!v; },
+    shiftUp: function () { canvas.dispatchEvent(new KeyboardEvent('keyup', { key: 'Shift', bubbles: true })); },
     shift: function () { var ev = new KeyboardEvent('keydown', { key: 'Shift', bubbles: true, cancelable: true }); canvas.dispatchEvent(ev); return ev.defaultPrevented; },
     pose: function () { return { bp: bodyPose(), cell: bodyCell(), head: headPos(), jit: shiverJit(), tint: bodyTint() }; },
     gameName: function () { return gameName(); }, tx: function (k, p) { return tx(k, p); },

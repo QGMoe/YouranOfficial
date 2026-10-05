@@ -44,6 +44,7 @@ export default {
     qte_tap: '点击',   // 同上：触屏
     torch_key: 'Shift 用火把取暖', // 中度失温时可以用手里的火把取暖（桌面）
     stand_key: 'Shift 爬起来',     // 重度倒下后回到轻度，可以起身（桌面）
+    relight_key: '按住 Shift 取火', // 火把灭着、够得着墙上点着的火把时（桌面）：按住约 1.5 秒点着，松开中断
     warming: '取暖中…别动',        // 站着用火把取暖的引导中（一动就中断）
     warming_rescue: '取暖中…',     // 倒下后用火把急救的引导中
     torch_tip_1: '取暖要原地站约 {sec} 秒，一动就中断、火把照样烧完', // 第一次出现取暖提示时的小提示（第一行）；{sec} 为引导秒数
@@ -54,6 +55,7 @@ export default {
   act: {
     torch: '用火把取暖',
     stand: '爬起来',
+    relight: '取火',             // 火把灭着、够得着墙上点着的火把时：按住按钮取火
     warming: '取暖中…别动',
     warming_rescue: '取暖中…'
   },

@@ -80,29 +80,47 @@ const LIB = `window.__L = (() => {
     ok(`取暖时一动就中断，火把照样用掉${tag}`, !r.cancel.use && !r.cancel.torch, JSON.stringify(r.cancel));
     await done(p); }
 
-  // 2b. 火把的生命周期（服主）：火灭了留着木棍，在墙上点着的火把旁按住朝它的方向约 1.5 s 重新点着（次数不限、不消耗墙上的火把）；
-  //     松开 / 墙上火把被水浇灭 / 自己脚下水 > 5 层都点不着；碰到深水（脚格 > 5 层、头格有水、躺着时任何水）手里的火把就灭；引导时的提示
+  // 2b. 火把的生命周期（服主）：火灭了留着木棍；够得着墙上点着的火把时出现「取火」动作（桌面提示「按住 Shift 取火」），按住 Shift 约 1.5 s 重新点着
+  //     （次数不限、不消耗墙上的火把）；方向键只管走路，朝着火把走 / 贴着它都不会自动取火；松开 / 走开 / 墙上火把被水浇灭 / 自己脚下水 > 5 层都点不着；
+  //     碰到深水（脚格 > 5 层、头格有水、躺着时任何水）手里的火把就灭；引导时的提示
   for (const q of ['', '&egg-2d']) { const tag = q ? '（2D）' : '（3D）', p = await open('&n=-120' + q);
     const r = await p.evaluate(() => { const { t, step, corridor, base } = window.__L; t.start(); t.god(true); t.thermoOn(false); t.level(t.maze().levels.length - 1); const [cx, cz] = corridor(3), b = base(), res = {};   // 最上层：流体很久以后才到
-      const setup = () => { t.teleport(cx - 1, cz); t.setBlock(cx + 1, b + 1, cz, 7); t.clearFluid(cx - 1, b + 1, cz); t.clearFluid(cx, b + 1, cz); t.setTorch(false); step(2); };
-      setup(); t.keys('r'); let litAt = -1, maxT = 0; for (let i = 0; i < 240 && litAt < 0; i++) { step(1); const rl = t.relight(); if (rl) maxT = Math.max(maxT, rl.t); if (t.thermo().torch) litAt = i / 60; } t.keys('');
-      res.ok = { litAt, maxT, still: t.torchCells().some(([x, z]) => x === cx + 1 && z === cz), relit: t.thermo().relit, light: t.thermo().light };
+      const setup = () => { t.shiftUp(); t.teleport(cx - 1, cz); t.setBlock(cx + 1, b + 1, cz, 7); t.clearFluid(cx - 1, b + 1, cz); t.clearFluid(cx, b + 1, cz); t.setTorch(false); step(2); };
+      // 用方向键走到够得着墙上火把的地方（出现「取火」动作）后松开方向键
+      const arrive = () => { setup(); t.keys('r'); let n = 0; while (t.thermo().act !== 'relight' && n++ < 200) step(1); t.keys(''); step(3); return n; };
+      const press = () => t.shift();
+      // 只按方向键朝着火把走、再贴着它按住方向键 3 s：不取火、不被定住，还能走（被石头挡住前一直往前）
+      setup(); t.keys('r'); let relightSeen = false, x0 = t.snapshot().x; for (let i = 0; i < 180; i++) { step(1); if (t.relight()) relightSeen = true; } t.keys(''); res.walk = { relightSeen, torch: t.thermo().torch, moved: t.snapshot().x - x0 };
+      // 取火：到位后按住 Shift
+      arrive(); t.thermoOn(true); step(3);   /* HUD 文字只在体温开着时画 */ res.prompt = { act: t.thermo().act, hud: t.hudText(), label: t.actLabel() }; t.thermoOn(false); press(); let litAt = -1, maxT = 0; for (let i = 0; i < 240 && litAt < 0; i++) { step(1); const rl = t.relight(); if (rl) maxT = Math.max(maxT, rl.t); if (t.thermo().torch) litAt = i / 60; } t.shiftUp();
+      res.ok = { litAt, maxT, still: t.torchCells().some(([x, z]) => x === cx + 1 && z === cz), relit: t.thermo().relit, light: t.thermo().light, actAfter: t.thermo().act };
+      // 没按 Shift：在火把旁站 3 s 也不会点着
+      arrive(); step(180); res.idle = { torch: t.thermo().torch, rl: t.relight() };
       // 次数不限
-      let n = 0; for (let k = 0; k < 3; k++) { setup(); t.keys('r'); step(150); t.keys(''); if (t.thermo().torch) n++; } res.unlimited = { n, relit: t.thermo().relit, still: t.torchCells().some(([x, z]) => x === cx + 1 && z === cz) };
+      let n = 0; for (let k = 0; k < 3; k++) { arrive(); press(); step(150); t.shiftUp(); if (t.thermo().torch) n++; } res.unlimited = { n, relit: t.thermo().relit, still: t.torchCells().some(([x, z]) => x === cx + 1 && z === cz) };
       // 松开：进度清零，再按要重新算满 1.5 s
-      setup(); t.keys('r'); step(70); const p1 = t.relight(); t.keys(''); step(2); const p2 = t.relight(); t.keys('r'); step(30); const p3 = t.relight(); t.keys('');
+      arrive(); press(); step(70); const p1 = t.relight(); t.shiftUp(); step(2); const p2 = t.relight(); press(); step(30); const p3 = t.relight(); t.shiftUp();
       res.release = { p1: p1 && p1.t, p2, p3: p3 && p3.t, torch: t.thermo().torch };
-      // 墙上火把在点火时被水浇灭
-      setup(); t.keys('r'); step(70); t.waterAt(cx + 1, b + 1, cz, 3); step(60); t.keys(''); res.flood = { torch: t.thermo().torch, rl: t.relight(), gone: !t.torchCells().some(([x, z]) => x === cx + 1 && z === cz) };
+      // 走开：按住 Shift 的同时按方向键，进度清零，不点着
+      arrive(); press(); step(70); const q1 = t.relight(); t.keys('l'); step(30); t.keys(''); const q2 = t.relight(); step(100); res.away = { q1: q1 && q1.t, q2, torch: t.thermo().torch }; t.shiftUp();
+      // 墙上火把在取火时被水浇灭
+      arrive(); press(); step(70); t.waterAt(cx + 1, b + 1, cz, 3); step(60); t.shiftUp(); res.flood = { torch: t.thermo().torch, rl: t.relight(), gone: !t.torchCells().some(([x, z]) => x === cx + 1 && z === cz) };
       t.clearFluid(cx + 1, b + 1, cz);
       // 自己脚下水 > 5 层：点不着
-      setup(); t.keys('r'); step(60); const c0 = [Math.floor(t.snapshot().x), Math.floor(t.snapshot().z)]; step(150, () => t.waterAt(c0[0], b + 1, c0[1], 6)); t.keys(''); res.deep = { torch: t.thermo().torch, rl: t.relight() }; t.clearFluid(c0[0], b + 1, c0[1]); t.clearFluid(cx, b + 1, cz); t.clearFluid(cx - 1, b + 1, cz);
+      arrive(); press(); step(60); const c0 = [Math.floor(t.snapshot().x), Math.floor(t.snapshot().z)]; step(150, () => t.waterAt(c0[0], b + 1, c0[1], 6)); t.shiftUp(); res.deep = { torch: t.thermo().torch, rl: t.relight() }; t.clearFluid(c0[0], b + 1, c0[1]); t.clearFluid(cx, b + 1, cz); t.clearFluid(cx - 1, b + 1, cz);
+      // 火把点着时没有「取火」动作
+      setup(); t.setTorch(true); t.teleport(cx, cz); step(3); res.lit = { act: t.thermo().act };
       return res; });
-    ok(`在墙上点着的火把旁按住朝它的方向约 1.5 s 重新点着，光回来了，墙上火把不消耗${tag}`, r.ok.litAt > 1.45 && r.ok.litAt < 2.6 && r.ok.maxT > 1.3 && r.ok.still && r.ok.relit === 1 && (r.ok.light === null || r.ok.light > 3), JSON.stringify(r.ok));
-    ok(`点火中松开：进度清零，重新按要从头算${tag}`, r.release.p1 > 0.5 && r.release.p2 === null && r.release.p3 < 0.6 && !r.release.torch, JSON.stringify(r.release));
-    ok(`点火中墙上火把被水浇灭：点不着${tag}`, !r.flood.torch && r.flood.rl === null && r.flood.gone, JSON.stringify(r.flood));
+    ok(`方向键朝着墙上火把走 / 按住：不取火、不被定住${tag}`, !r.walk.relightSeen && !r.walk.torch && r.walk.moved > 0.2, JSON.stringify(r.walk));
+    ok(`火灭了、够得着墙上火把时出现「取火」动作，桌面提示「按住 Shift 取火」${tag}`, r.prompt.act === 'relight' && r.prompt.hud.includes('按住 Shift 取火') && r.prompt.label === null, JSON.stringify(r.prompt));
+    ok(`按住 Shift 约 1.5 s 重新点着，光回来了，墙上火把不消耗${tag}`, r.ok.litAt > 1.45 && r.ok.litAt < 2.6 && r.ok.maxT > 1.3 && r.ok.still && r.ok.relit === 1 && (r.ok.light === null || r.ok.light > 3) && r.ok.actAfter === '', JSON.stringify(r.ok));
+    ok(`不按 Shift 站在墙上火把旁：不会点着${tag}`, !r.idle.torch && r.idle.rl === null, JSON.stringify(r.idle));
+    ok(`取火中松开 Shift：进度清零，重新按要从头算${tag}`, r.release.p1 > 0.5 && r.release.p2 === null && r.release.p3 < 0.6 && !r.release.torch, JSON.stringify(r.release));
+    ok(`取火中走开（方向键）：进度清零、不点着${tag}`, r.away.q1 > 0.5 && r.away.q2 === null && !r.away.torch, JSON.stringify(r.away));
+    ok(`取火中墙上火把被水浇灭：点不着${tag}`, !r.flood.torch && r.flood.rl === null && r.flood.gone, JSON.stringify(r.flood));
     ok(`自己脚下水 > 5 层：点不着${tag}`, !r.deep.torch && r.deep.rl === null, JSON.stringify(r.deep));
     ok(`重新点火次数不限${tag}`, r.unlimited.n === 3 && r.unlimited.still, JSON.stringify(r.unlimited));
+    ok(`火把点着时没有「取火」动作${tag}`, r.lit.act === '', JSON.stringify(r.lit));
     await done(p); }
   for (const q of ['', '&egg-2d']) { const tag = q ? '（2D）' : '（3D）', p = await open('&n=-120' + q);
     const r = await p.evaluate(() => { const { t, step, corridor, base } = window.__L; t.start(); t.god(true); const b = base(), res = {};
@@ -287,6 +305,15 @@ const LIB = `window.__L = (() => {
     const overlap = a && !(a.right <= j.left || a.left >= j.right || a.bottom <= j.top || a.top >= j.bottom);
     const opposite = a && (side === 'left' ? a.left + a.width / 2 > r.vw / 2 : a.left + a.width / 2 < r.vw / 2);
     ok(`动作按钮 ${tag}：中度失温时出现「用火把取暖」，在摇杆另一侧、不压住摇杆、在视口内；按下即取暖`, r.hidden0 === null && a && !overlap && opposite && a.left >= 0 && a.top >= 0 && a.right <= r.vw && a.bottom <= r.vh && r.label === '用火把取暖' && r.used, JSON.stringify(r));
+    await done(p); }
+  // 触屏：火把灭着、够得着墙上火把时，动作按钮写「取火」，按住约 1.5 s 点着；松开 / 手指移开中断
+  { const p = await open('&n=-120', { viewport: { width: 390, height: 844 }, deviceScaleFactor: 2, hasTouch: true, isMobile: true });
+    const r = await p.evaluate(() => { const { t, step, corridor, base } = window.__L; t.start(); t.god(true); t.thermoOn(false); t.level(t.maze().levels.length - 1); const [cx, cz] = corridor(3), b = base(), btn = document.querySelector('.egg-breach-act'), res = {};
+      const ev = (n) => btn.dispatchEvent(new PointerEvent(n, { bubbles: true, cancelable: true, pointerId: 5, pointerType: 'touch' }));
+      const arrive = () => { t.teleport(cx - 1, cz); t.setBlock(cx + 1, b + 1, cz, 7); t.clearFluid(cx - 1, b + 1, cz); t.clearFluid(cx, b + 1, cz); t.setTorch(false); step(2); t.keys('r'); let n = 0; while (t.thermo().act !== 'relight' && n++ < 200) step(1); t.keys(''); step(3); };
+      arrive(); res.label = t.actLabel(); ev('pointerdown'); step(40); const p1 = t.relight(); ev('pointerup'); step(2); res.release = { p1: p1 && p1.t, p2: t.relight(), torch: t.thermo().torch };
+      arrive(); ev('pointerdown'); step(150); res.lit = t.thermo().torch; ev('pointerup'); return res; });
+    ok('触屏：动作按钮写「取火」，按住约 1.5 s 点着，松开中断', r.label === '取火' && r.release.p1 > 0.4 && r.release.p2 === null && !r.release.torch && r.lit === true, JSON.stringify(r));
     await done(p); }
   // 横屏全屏（宿主的全屏路径）：按钮在另一侧的边距里，避开宿主右上角的按钮区
   for (const side of ['left', 'right']) {
