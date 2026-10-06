@@ -12,7 +12,7 @@
 
 ##### 其他下载方式
 
-1. [微云网盘下载](https://share.weiyun.com/KVmBfzZ8)
+1. [微云网盘下载](https://share.weiyun.com/EppMjuK3)
 2. [加入服务器QQ群下载](https://jq.qq.com/?_wv=1027&k=Hwv4w2NU)
 
 <br />
@@ -52,9 +52,11 @@
 <br />
 <br />
 
-### 获取白名单
+### 获取网页帐号
 
-加入服务器QQ群：[953168624](https://jq.qq.com/?_wv=1027&k=Hwv4w2NU)，申请白名单！
+点击官网右上角的[网页面板](https://portal-youran.qingu.moe)，前往网页面板注册并等待帐号审核！
+
+您也可以加入服务器QQ群：[953168624](https://jq.qq.com/?_wv=1027&k=Hwv4w2NU)，但这并不是必需的，我们也有一些玩家不在 QQ 群里面。
 
 ### 服务器地址
 

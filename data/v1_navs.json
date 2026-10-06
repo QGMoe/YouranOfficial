@@ -24,6 +24,12 @@
         "is_direct":true
     },
     {
+        "name":"网页面板",
+        "link":"https://portal-youran.qingu.moe",
+        "is_direct":true,
+        "outlink":true
+    },
+    {
         "name":"前往新版官网",
         "link":"/v2/",
         "is_direct":true

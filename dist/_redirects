@@ -10,9 +10,11 @@
 /old/list.html          /v1/list          301
 /old/update             /v1/update        301
 /old/update.html        /v1/update        301
-/old/*                  /v1/:splat        301
 
 # 新版（v3）就在根目录：/v3/… 跳到根目录对应地址
 /v3                     /                 301
 /v3/                    /                 301
+
+# 优化 
+/old/*                  /v1/:splat        301
 /v3/*                   /:splat           301
