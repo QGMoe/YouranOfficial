@@ -10,6 +10,7 @@ ERAS = {1: "13Server", 2: "YouranServer"}
 DL_BASE = "https://dl-yr.qg.mo.cn/assets/packs/"
 # 下载站上不带版本号、每次更新都被覆盖的固定文件，始终是最新版；versions.json 的最后一条就是最新版，所以只挂在最后一条上，不写进数据。
 # 普通客户端已有带版本号的文件，固定地址只给 MCBBS 标准客户端（它只有这一个下载方式）
+FILE_STATUSES = ("A", "P", "N")
 LATEST_FIXED = {"mcbbs": ("YouranServer MCBBS.zip", "https://dl-yr.qg.mo.cn/YouranServer%20MCBBS.zip")}
 DEFAULT_BRIEF = "更新信息见“服务器更新日志”"          # 与旧模板的默认文字相同
 HOST_NAME = {"share.weiyun.com": "微云网盘", "pan.baidu.com": "百度网盘"}
@@ -80,8 +81,12 @@ def normalize(ver, changelog_ids, is_newest):
     normalized_ver["brief_html"] = brief or DEFAULT_BRIEF          # 现有数据中有 <br/>，模板里按可信 HTML 输出
     normalized_ver["brief_long"] = len(plain) > 56
     normalized_ver["brief_short"] = plain[:40].rstrip() + "…" if normalized_ver["brief_long"] else plain
-    normalized_ver["available"] = ver.get("file_available", ver["era"] != 1)
-    normalized_ver["pending"] = ver.get("pending", False)
+    # file_status：A 可下载 / P 待补（下载处显示“待补”）/ N 不再提供（不显示下载方式）；不写为 A
+    status = ver.get("file_status", "A")
+    if status not in FILE_STATUSES:
+        raise ValueError("版本 %s 的 file_status 只能是 A、P、N，现在是 %r" % (ver["id"], status))
+    normalized_ver["available"] = status == "A"
+    normalized_ver["pending"] = status == "P"
 
     dls = []
     if normalized_ver["available"]:

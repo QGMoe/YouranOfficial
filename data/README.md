@@ -16,8 +16,7 @@
 | `links` | 否 | 普通客户端的其他下载方式 `[{"name": "百度网盘（提取码：yran）", "addr": "…"}]`，名称里的“（提取码：…）”会自动拆出 |
 | `mcbbs_links` | 否 | MCBBS标准客户端的下载方式，格式同 `links`；可以是下载站直链 |
 | `mcbbs_size` | 否 | MCBBS标准客户端文件大小（写法同 `size`）；没有时不显示大小 |
-| `file_available` | 否 | `false` = 文件已不再提供，不显示下载链接（13Server 的版本都是 `false`） |
-| `pending` | 否 | `true` = 详情待补，下载处显示“待补” |
+| `file_status` | 否 | 文件状态，三选一：`A` 可下载（不写时即为 `A`）、`P` 待补（下载处显示“待补”）、`N` 不再提供（不显示下载方式；13Server 的版本都是 `N`）。写了别的值构建时报错 |
 
 没有 `link` 时，普通客户端的下载地址是下载站默认路径 `https://dl-yr.qg.mo.cn/assets/packs/<YouranServer|13Server><版本号>.zip`。
 

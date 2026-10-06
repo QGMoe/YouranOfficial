@@ -1,4 +1,4 @@
-{#- 归档：v2 的 /v2/list（改版前的 list.html），v1 的 /v1/list 也继承它。只改了 noindex、内部链接前缀，以及对 versions.json 新字段 pending 的兼容；新版 /list 的模板是 list_page.html。 -#}
+{#- 归档：v2 的 /v2/list（改版前的 list.html），v1 的 /v1/list 也继承它。只改了 noindex、内部链接前缀，以及对 versions.json 字段 file_status（待补）的兼容；新版 /list 的模板是 list_page.html。 -#}
 {% set eras = {
 	1 : "13Server",
 	2 : "YouranServer"
@@ -24,14 +24,14 @@
 			<th>下载方式</th>
 			{% for ver in versions %}
 				<tr>
-					<td>{% if ver.pending %}{{eras[ver.era]}}{{ver.id}}.zip{% else %}<a {% if ver.link is undefined %}href="https://dl-yr.qg.mo.cn/assets/packs/{{eras[ver.era]}}{{ver.id}}.zip"{% else %}href="{{ver.link}}"{% endif %}>{{eras[ver.era]}}{{ver.id}}.zip</a>{% endif %}</td>
+					<td>{% if ver.file_status == "P" %}{{eras[ver.era]}}{{ver.id}}.zip{% else %}<a {% if ver.link is undefined %}href="https://dl-yr.qg.mo.cn/assets/packs/{{eras[ver.era]}}{{ver.id}}.zip"{% else %}href="{{ver.link}}"{% endif %}>{{eras[ver.era]}}{{ver.id}}.zip</a>{% endif %}</td>
 					<td>{{ver.title}}</td>
 					<td>{{ver.id}}</td>
 					<td>{{ver.size}}</td>
 					<td>{{ver.brief if ver.brief is defined else "更新信息见“服务器更新日志”"}}</td>
 					<td>{{ver.time}}</td>
 					<td>{% if ver.mcbbs_links is defined %}普通客户端下载<br/>{% endif %}
-					{% if not ver.pending %}点击文件名直接下载{% endif %}
+					{% if ver.file_status != "P" %}点击文件名直接下载{% endif %}
 					{% if ver.links is defined %}
 						或<br/>
 						{% for link in ver.links %}

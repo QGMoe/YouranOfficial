@@ -6,7 +6,7 @@
         "brief":"添加了离线皮肤MOD（CustomSkinLoader）",
         "time":"2021-9-20",
         "era":1,
-        "file_available":false
+        "file_status":"N"
     },
     {
         "title":"暮色更新",
@@ -15,7 +15,7 @@
         "brief":"添加了暮色森林MOD（twilightforest）",
         "time":"2021-9-27",
         "era":1,
-        "file_available":false
+        "file_status":"N"
     },
     {
         "title":"传送门缓存更新",
@@ -24,7 +24,7 @@
         "brief":"添加了传送门超级缓存MOD（portalsupercache）",
         "time":"2021-9-27",
         "era":1,
-        "file_available":false
+        "file_status":"N"
     },
     {
         "title":"整合包BUG修复",
@@ -33,7 +33,7 @@
         "brief":"修复了整合包无法使用的问题",
         "time":"2021-9-27",
         "era":1,
-        "file_available":false
+        "file_status":"N"
     },
     {
         "title":"稳定性更新",
@@ -42,7 +42,7 @@
         "brief":"添加了磷优化模组（phosphor）",
         "time":"2021-9-28",
         "era":1,
-        "file_available":false
+        "file_status":"N"
     },
     {
         "title":"失落更新",
@@ -51,7 +51,7 @@
         "brief":"添加了失落的城市和配套的失落的灵魂模组（lostcities and lostsouls）",
         "time":"2021-9-29",
         "era":1,
-        "file_available":false
+        "file_status":"N"
     },
     {
         "title":"音乐测试",
@@ -60,7 +60,7 @@
         "brief":"添加了MCDJ！和两首曲子！",
         "time":"2021-9-30",
         "era":1,
-        "file_available":false
+        "file_status":"N"
     },
     {
         "title":"音乐更新",
@@ -69,7 +69,7 @@
         "brief":"添加了许多曲子！",
         "time":"2021-9-30",
         "era":1,
-        "file_available":false
+        "file_status":"N"
     },
     {
         "title":"次要更新",
@@ -78,7 +78,7 @@
         "brief":"增加了线程优化模组（TickThreading）",
         "time":"2021-10-2",
         "era":1,
-        "file_available":false
+        "file_status":"N"
     },
     {
         "title":"重要更新",
@@ -87,7 +87,7 @@
         "brief":"增加了自定义模组（CraftTweaker）和更多音乐",
         "time":"2021-10-3",
         "era":1,
-        "file_available":false
+        "file_status":"N"
     },
     {
         "title":"？？？更新",
@@ -96,7 +96,7 @@
         "brief":"①加入了区块加载器mod（ChickenChunks）和其前置模组CodeChicken Lib（CCL）②加入了SCP: Lockdown ③优化了服务器",
         "time":"2021-10-6",
         "era":1,
-        "file_available":false
+        "file_status":"N"
     },
     {
         "title":"烟花苦力怕更新",
@@ -464,7 +464,7 @@
         "mcbbs_size":"196101KB",
         "time":"2026-6-26",
         "era":2,
-        "file_available":false
+        "file_status":"N"
     },
     {
         "title":"国庆更新",
