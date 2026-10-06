@@ -60,38 +60,38 @@ def entry(kind, pack, name, url, provider=None):
             "provider": p, "prov_label": label, "show_prov_label": bool(label) and label not in name}
 
 
-def normalize(v, changelog_ids, is_newest):
-    era = ERAS[v["era"]]
-    y, m, d = (int(x) for x in v["time"].split("-"))
-    n = dict(v)
-    n["era_name"] = era
-    n["date"] = "%04d-%02d-%02d" % (y, m, d)
-    ymd = "%04d%02d%02d" % (y, m, d)
-    n["changelog"] = ymd if ymd in changelog_ids else None
-    n["anchor"] = "v" + v["id"]
-    n["file_name"] = "%s%s.zip" % (era, v["id"])
-    n["size_text"] = size_text(v.get("size"))
-    n["mcbbs_size_text"] = size_text(v.get("mcbbs_size")) if v.get("mcbbs_size") else None
-    brief = v.get("brief")
+def normalize(ver, changelog_ids, is_newest):
+    era = ERAS[ver["era"]]
+    year, mouth, date = (int(x) for x in ver["time"].split("-"))
+    normalized_ver = dict(ver)
+    normalized_ver["era_name"] = era
+    normalized_ver["date"] = "%04d-%02d-%02d" % (year, mouth, date)
+    ymd = "%04d%02d%02d" % (year, mouth, date)
+    normalized_ver["changelog"] = ymd if ymd in changelog_ids else None
+    normalized_ver["anchor"] = "v" + ver["id"]
+    normalized_ver["file_name"] = "%s%s.zip" % (era, ver["id"])
+    normalized_ver["size_text"] = size_text(ver.get("size"))
+    normalized_ver["mcbbs_size_text"] = size_text(ver.get("mcbbs_size")) if ver.get("mcbbs_size") else None
+    brief = ver.get("brief")
     plain = re.sub(r"<[^>]+>", " ", brief) if brief else DEFAULT_BRIEF
-    n["brief_html"] = brief or DEFAULT_BRIEF          # 现有数据中有 <br/>，模板里按可信 HTML 输出
-    n["brief_long"] = len(plain) > 56
-    n["brief_short"] = plain[:40].rstrip() + "…" if n["brief_long"] else plain
-    n["available"] = v.get("file_available", v["era"] != 1)
-    n["pending"] = v.get("pending", False)
+    normalized_ver["brief_html"] = brief or DEFAULT_BRIEF          # 现有数据中有 <br/>，模板里按可信 HTML 输出
+    normalized_ver["brief_long"] = len(plain) > 56
+    normalized_ver["brief_short"] = plain[:40].rstrip() + "…" if normalized_ver["brief_long"] else plain
+    normalized_ver["available"] = ver.get("file_available", ver["era"] != 1)
+    normalized_ver["pending"] = ver.get("pending", False)
 
     dls = []
-    if n["available"]:
-        legacy = v.get("link")
+    if normalized_ver["available"]:
+        legacy = ver.get("link")
         if legacy is None:
-            dls.append(entry("direct", "normal", n["file_name"], DL_BASE + n["file_name"]))
+            dls.append(entry("direct", "normal", normalized_ver["file_name"], DL_BASE + normalized_ver["file_name"]))
         else:
             # 旧模板：有 link 时文件名指向它（这几个版本只在网盘提供），作为普通客户端的第一个下载方式
             dls.append(entry("netdisk", "normal", HOST_NAME.get(urlparse(legacy).hostname, "网盘"), legacy))
-        for l in v.get("links", []):
+        for l in ver.get("links", []):
             if l["addr"] != legacy:
                 dls.append(entry("netdisk", "normal", l["name"], l["addr"], l.get("provider")))
-        for l in v.get("mcbbs_links", []):
+        for l in ver.get("mcbbs_links", []):
             # latest_alias：不带版本号、始终指向最新版的固定地址，只在最新的版本上显示
             if l.get("latest_alias") and not is_newest:
                 continue
@@ -104,10 +104,10 @@ def normalize(v, changelog_ids, is_newest):
             continue
         prim = next((e for e in items if e["provider"] == "dlyr"), None) or items[0]
         packs.append(dict(meta, key=key, primary=prim, others=[e for e in items if e is not prim],
-                          file_label=n["file_name"] if key == "normal" else prim["name"]))
-    n["packs"] = packs
-    n["pack_map"] = {p["key"]: p for p in packs}
-    return n
+                          file_label=normalized_ver["file_name"] if key == "normal" else prim["name"]))
+    normalized_ver["packs"] = packs
+    normalized_ver["pack_map"] = {p["key"]: p for p in packs}
+    return normalized_ver
 
 
 def size_text(size):

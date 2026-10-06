@@ -453,17 +453,18 @@
         ],
         "id":"2.0.0.0",
         "size":"196956KB",
+        "mcbbs_size":"",
         "time":"2026-6-24",
         "era":2
     },
     {
-        "title":"待补",
+        "title":"重生之小修小补更新",
         "id":"2.0.0.1",
-        "size":"待补",
+        "size":"196101KB",
+        "mcbbs_size":"196101KB",
         "time":"2026-6-26",
         "era":2,
-        "file_available":false,
-        "pending":true
+        "file_available":false
     },
     {
         "title":"国庆更新",
@@ -477,6 +478,7 @@
                 "addr":"https://dl-yr.qg.mo.cn/YouranServer%20MCBBS.zip",
                 "latest_alias":true
             }
-        ]
+        ],
+        "mcbbs_size":"197302KB"
     }
 ]
