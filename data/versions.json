@@ -376,6 +376,7 @@
         "brief":"此次更新优化了模组间的联动，并添加了一些新的东西。",
         "id":"1.8.2",
         "size":"197199KB",
+        "mcbbs_size":"197200KB",
         "time":"2023-7-4",
         "era":2
     },
@@ -404,6 +405,7 @@
         "brief":"此次更新优化了模组间的联动，并添加了一些新的东西。",
         "id":"1.8.3",
         "size":"198123KB",
+        "mcbbs_size":"198123KB",
         "time":"2023-8-2",
         "era":2
     },
@@ -433,6 +435,7 @@
         "brief":"此次更新修复了一些问题。",
         "id":"1.8.3.1",
         "size":"198113KB",
+        "mcbbs_size":"198113KB",
         "time":"2023-8-4",
         "era":2
     },
@@ -453,25 +456,43 @@
         ],
         "id":"2.0.0.0",
         "size":"196956KB",
-        "mcbbs_size":"",
+        "mcbbs_size":"196957KB",
         "time":"2026-6-24",
         "era":2
     },
     {
         "title":"重生之小修小补更新",
         "id":"2.0.0.1",
+        "link":"https://share.weiyun.com/H1DLriC7",
+        "mcbbs_links":[
+            {
+                "name":"微云网盘",
+                "addr":"https://share.weiyun.com/ihidjeIx"
+            }
+        ],
         "size":"196101KB",
         "mcbbs_size":"196101KB",
         "time":"2026-6-26",
-        "era":2,
-        "file_status":"N"
+        "era":2
     },
     {
         "title":"国庆更新",
         "id":"2.1.0",
+        "links":[
+            {
+                "name":"微云网盘",
+                "addr":"https://share.weiyun.com/EppMjuK3"
+            }
+        ],
+        "mcbbs_links":[
+            {
+                "name":"微云网盘",
+                "addr":"https://share.weiyun.com/S5CarFGc"
+            }
+        ],
         "size":"197301KB",
+        "mcbbs_size":"197302KB",
         "time":"2026-10-1",
-        "era":2,
-        "mcbbs_size":"197302KB"
+        "era":2
     }
 ]
