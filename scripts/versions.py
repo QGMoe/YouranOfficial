@@ -8,6 +8,9 @@ from urllib.parse import urlparse
 
 ERAS = {1: "13Server", 2: "YouranServer"}
 DL_BASE = "https://dl-yr.qg.mo.cn/assets/packs/"
+# 下载站上不带版本号、每次更新都被覆盖的固定文件，始终是最新版；versions.json 的最后一条就是最新版，所以只挂在最后一条上，不写进数据。
+# 普通客户端已有带版本号的文件，固定地址只给 MCBBS 标准客户端（它只有这一个下载方式）
+LATEST_FIXED = {"mcbbs": ("YouranServer MCBBS.zip", "https://dl-yr.qg.mo.cn/YouranServer%20MCBBS.zip")}
 DEFAULT_BRIEF = "更新信息见“服务器更新日志”"          # 与旧模板的默认文字相同
 HOST_NAME = {"share.weiyun.com": "微云网盘", "pan.baidu.com": "百度网盘"}
 QQ_GROUP = {"name": "加入服务器QQ群下载", "addr": "https://jq.qq.com/?_wv=1027&k=Hwv4w2NU"}   # 首页原有的链接与文字
@@ -92,10 +95,10 @@ def normalize(ver, changelog_ids, is_newest):
             if l["addr"] != legacy:
                 dls.append(entry("netdisk", "normal", l["name"], l["addr"], l.get("provider")))
         for l in ver.get("mcbbs_links", []):
-            # latest_alias：不带版本号、始终指向最新版的固定地址，只在最新的版本上显示
-            if l.get("latest_alias") and not is_newest:
-                continue
             dls.append(entry("mcbbs", "mcbbs", l["name"], l["addr"], l.get("provider")))
+        if is_newest:
+            for pack, (name, addr) in LATEST_FIXED.items():
+                dls.append(entry("direct" if pack == "normal" else "mcbbs", pack, name, addr))
 
     packs = []
     for key, meta in PACKS.items():

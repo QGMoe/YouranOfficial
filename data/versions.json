@@ -472,13 +472,6 @@
         "size":"197301KB",
         "time":"2026-10-1",
         "era":2,
-        "mcbbs_links":[
-            {
-                "name":"YouranServer MCBBS.zip",
-                "addr":"https://dl-yr.qg.mo.cn/YouranServer%20MCBBS.zip",
-                "latest_alias":true
-            }
-        ],
         "mcbbs_size":"197302KB"
     }
 ]

@@ -21,20 +21,10 @@
 
 没有 `link` 时，普通客户端的下载地址是下载站默认路径 `https://dl-yr.qg.mo.cn/assets/packs/<YouranServer|13Server><版本号>.zip`。
 
-### 固定指向最新版的地址（`latest_alias`）
+### 固定指向最新版的地址
 
-下载站上不带版本号的文件（如 `https://dl-yr.qg.mo.cn/YouranServer%20MCBBS.zip`）每次更新都会被覆盖，始终是最新版。
-这类链接在 `links` / `mcbbs_links` 的那一项里加 `"latest_alias": true`：
-
-```json
-"mcbbs_links": [
-    {"name": "YouranServer MCBBS.zip", "addr": "https://dl-yr.qg.mo.cn/YouranServer%20MCBBS.zip", "latest_alias": true}
-]
-```
-
-规则：**带 `latest_alias` 的链接只在该版本是 versions.json 最后一条（最新版本）时显示**。发布新版本、在末尾追加新条目后，旧版本上的这条链接自动隐藏，不会误指向新包；
-如果新版本也提供同一个固定地址，在新条目里再写一次即可。历史版本的列表页遵守同样的规则。
-用显式字段而不是根据文件名猜测，是因为文件名里有没有版本号并不可靠（例如 `YouranServer2.1.0.zip` 与 `YouranServer.zip`）。
+下载站上不带版本号的文件（`https://dl-yr.qg.mo.cn/YouranServer%20MCBBS.zip`）每次更新都会被覆盖，始终是最新版。它**不写进 versions.json**：
+`scripts/versions.py` 的 `LATEST_FIXED` 把它自动挂在最后一条（最新版本）的 MCBBS 标准客户端下。发布新版本只需在末尾追加新条目。
 
 ### 下载来源图标
 

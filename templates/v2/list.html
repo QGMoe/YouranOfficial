@@ -1,4 +1,4 @@
-{#- 归档：v2 的 /v2/list（改版前的 list.html），v1 的 /v1/list 也继承它。只改了 noindex、内部链接前缀，以及对 versions.json 新字段 pending、latest_alias 的兼容；新版 /list 的模板是 list_page.html。 -#}
+{#- 归档：v2 的 /v2/list（改版前的 list.html），v1 的 /v1/list 也继承它。只改了 noindex、内部链接前缀，以及对 versions.json 新字段 pending 的兼容；新版 /list 的模板是 list_page.html。 -#}
 {% set eras = {
 	1 : "13Server",
 	2 : "YouranServer"
@@ -40,7 +40,7 @@
 					{% endif %}
 					{% if ver.mcbbs_links is defined %}
 						<br/>（新）MCBBS标准客户端下载<br/>
-						{% for link in ver.mcbbs_links if not link.latest_alias or ver.id == versions[-1].id %}
+						{% for link in ver.mcbbs_links %}
 							<a target="_blank" href="{{link.addr}}">{{loop.index}}.{{link.name}}下载</a>{{"<br/>" if not loop.last else ""}}
 						{% endfor %}
 					{% endif %}
