@@ -19,7 +19,7 @@
         <td>{{mod.trans | default("&nbsp;")}}</td>
         <td>{{mod.ver}}</td>
         <td>{{mod.time}}</td>
-        <td>{{mod.comment}}</td>
+        <td>{{mod.comment | replace('href="/update.html', 'href="update.html')}}</td>
         <td>{{install_mode[mod.mode] | default("？")}}</td>
         <td>{% if mod.mode != "S" and mod.mode != "P" %}{{"有" if mod.in_pack | default(true) else "无"}}{% else %}无{% endif %}</td>
         <td><a target="_blank" href="{{mod.link}}">{{ mod.link_name | default("MC百科")}}</a></td>

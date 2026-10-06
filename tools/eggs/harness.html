@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<!-- 404 彩蛋游戏调试页（开发用，不部署）。在仓库根目录运行 python -m http.server，然后打开 http://localhost:8000/tools/eggs/harness.html -->
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>彩蛋游戏调试</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="../../dist/assets/site.css">
+<style>
+	.h-bar { display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: center; padding: 14px 0; }
+	.h-bar label { display: inline-flex; gap: 6px; align-items: center; }
+	.h-bar input[type=text] { width: 12em; font: inherit; }
+	.h-info { font-family: var(--mono); font-size: .85rem; color: var(--muted); }
+	.h-stage { padding: 20px; }
+</style>
+</head>
+<body>
+<main class="wrap">
+	<div class="h-bar">
+		<label>游戏 <select id="game"></select></label>
+		<label>n <input id="n" type="text" value="4" inputmode="numeric"></label>
+		<label><input id="bymod" type="checkbox"> 按 n mod 游戏数选择（与线上相同）</label>
+		<label>主题 <select id="theme"><option value="">跟随系统</option><option value="light">浅色</option><option value="dark">深色</option></select></label>
+		<label><input id="rm" type="checkbox"> reducedMotion</label>
+		<label><input id="notx" type="checkbox"> 不加载文案文件（检查内置文案）</label>
+		<button id="mount" class="button primary" type="button">mount</button>
+		<button id="unmount" class="button secondary" type="button">unmount</button>
+		<label id="audio-slot">音效</label>
+	</div>
+	<p class="h-info" id="info"></p>
+	<div class="block h-stage"><div class="egg-head"></div><div id="root" class="egg-root"></div></div>
+</main>
+<script type="module">
+import { mountGame, pick, fullscreenControl, FS_CSS } from '../../dist/assets/egg/host.js';
+import { toggleButton } from '../../dist/assets/egg/audio.js';
+const base = new URL('../../dist/assets/egg/games/', location.href);
+const $ = (id) => document.getElementById(id);
+$('audio-slot').appendChild(toggleButton());
+// 横屏全屏（与 404 页同一实现；调试页在任何设备上都显示按钮）：全屏期间 #root 带 class egg-fs
+const fsStyle = document.createElement('style');
+fsStyle.textContent = FS_CSS + '.h-stage>.egg-head{display:flex;justify-content:flex-end;gap:8px;margin-bottom:8px}';
+document.head.appendChild(fsStyle);
+document.querySelector('.h-stage>.egg-head').appendChild(fullscreenControl(document.querySelector('.h-stage'), $('root')).button);
+let current = null, games = [];
+// 从 http.server 的目录列表里读出游戏文件（与 scripts/eggs.py 的规则相同：NN-id.js，按文件名排序）
+const html = await (await fetch(base)).text();
+games = [...new Set([...html.matchAll(/href="(\d{2}-[a-z0-9-]+\.js)"/g)].map((m) => m[1]))].sort();
+$('game').innerHTML = games.map((g) => `<option>${g}</option>`).join('');
+$('theme').onchange = () => { const v = $('theme').value; if (v) document.documentElement.setAttribute('data-theme', v); else document.documentElement.removeAttribute('data-theme'); };
+async function doMount() {
+	if (current) { current.unmount(); current = null; }
+	const n = ($('n').value.match(/\d+/) || ['4'])[0];
+	const { index, cycle } = pick(n, games.length);
+	const file = $('bymod').checked ? games[index] : $('game').value;
+	$('info').textContent = `n=${n}  games=${games.length}  n mod games=${index} (${games[index]})  cycle=${cycle}  →  ${file}`;
+	try {
+		current = await mountGame($('root'), new URL(file, base).href, n, cycle, { reducedMotion: $('rm').checked, count: games.length, texts: $('notx').checked ? false : undefined });
+		// 游戏名与简介（dist/assets/egg/texts/<id>.js 的 name / intro）
+		$('info').textContent += `  名字：${current.name || '（无）'}  简介：${current.intro || '（空）'}  文案文件：${current.texts ? '已加载' : '未加载，用内置'}`;
+	}
+	catch (e) { $('info').textContent += `  加载/挂载失败：${e}`; console.error(e); }
+}
+$('mount').onclick = doMount;
+$('unmount').onclick = () => { if (current) { current.unmount(); current = null; } };
+doMount();
+</script>
+</body>
+</html>

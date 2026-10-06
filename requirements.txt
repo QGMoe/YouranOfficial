@@ -1,0 +1,7 @@
+# 构建依赖：python build.py --do
+Jinja2==3.1.6
+MarkupSafe==3.0.3
+Markdown==3.11
+beautifulsoup4==4.15.0
+soupsieve==2.10
+Pygments==2.21.0

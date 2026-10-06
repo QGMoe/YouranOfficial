@@ -2,6 +2,9 @@
     {
         "title":"悠然MC服务器",
         "id":"index",
+        "sitemap":{
+            "priority":"1.0"
+        },
         "navs":[
             {
                 "name":"客户端下载",
@@ -25,15 +28,21 @@
         ]
     },
     {
-        "title":"悠然MC服务器：服务器信息",
+        "title":"服务器信息 - 悠然MC服务器",
         "id":"information",
+        "sitemap":{
+            "priority":"0.8"
+        },
         "ext":[
             "mod_list"
         ]
     },
     {
-        "title":"悠然MC服务器：魔改模组",
+        "title":"魔改信息 - 悠然MC服务器",
         "id":"mods",
+        "sitemap":{
+            "priority":"0.5"
+        },
         "scripts":[
             {
                 "id":"mods",
@@ -42,25 +51,50 @@
         ]
     },
     {
-        "title":"悠然MC服务器：服务端更新日志",
+        "title":"更新日志 - 悠然MC服务器",
         "id":"update",
+        "sitemap":{
+            "priority":"0.8"
+        },
         "scripts":[
             {
                 "id":"changelogs",
                 "path":"changelog"
             }
+        ],
+        "expanded":5
+    },
+    {
+        "title":"整合包版本列表 - 悠然MC服务器",
+        "id":"list",
+        "sitemap":{
+            "priority":"0.4"
+        },
+        "ext":[
+            "versions"
+        ],
+        "template":"list_page.html",
+        "scripts":[
+            {
+                "id":"vlist",
+                "path":"versions"
+            }
         ]
     },
     {
-        "title":"悠然MC服务器：所有版本",
-        "id":"list",
-        "ext":[
-            "versions"
+        "title":"页面不存在 - 悠然MC服务器",
+        "id":"404",
+        "noindex":true,
+        "scripts":[
+            {
+                "id":"eggs",
+                "path":"eggs"
+            }
         ]
     },
     {
         "title":"悠然MC服务器",
-        "id":"old/index",
+        "id":"v1/index",
         "navs":[
             {
                 "name":"目录",
@@ -98,13 +132,13 @@
         "markdowns":[
             {
                 "id":"content",
-                "path":"old/index/content.md"
+                "path":"v1/index/content.md"
             }
         ]
     },
     {
         "title":"悠然MC服务器：服务器信息",
-        "id":"old/information",
+        "id":"v1/information",
         "ext":[
             "mod_list"
         ],
@@ -135,19 +169,82 @@
     },
     {
         "title":"悠然MC服务器：所有版本",
-        "id":"old/list",
+        "id":"v1/list",
         "ext":[
             "versions"
         ]
     },
     {
         "title":"悠然MC服务器：服务端更新日志",
-        "id":"old/update",
+        "id":"v1/update",
         "scripts":[
             {
                 "id":"changelogs",
                 "path":"changelog"
             }
         ]
+    },
+    {
+        "title":"悠然MC服务器",
+        "id":"v2/index",
+        "navs":[
+            {
+                "name":"客户端下载",
+                "link":"#download",
+                "is_direct":true
+            }
+        ],
+        "markdowns":[
+            {
+                "id":"join",
+                "path":"v2/index/join.md"
+            },
+            {
+                "id":"disadvantages",
+                "path":"v2/index/disadvantages.md"
+            },
+            {
+                "id":"intro",
+                "path":"v2/index/intro.md"
+            }
+        ]
+    },
+    {
+        "title":"悠然MC服务器：服务器信息",
+        "id":"v2/information",
+        "ext":[
+            "mod_list"
+        ]
+    },
+    {
+        "title":"悠然MC服务器：魔改模组",
+        "id":"v2/mods",
+        "scripts":[
+            {
+                "id":"mods",
+                "path":"mods"
+            }
+        ]
+    },
+    {
+        "title":"悠然MC服务器：服务端更新日志",
+        "id":"v2/update",
+        "scripts":[
+            {
+                "id":"changelogs",
+                "path":"changelog"
+            }
+        ]
+    },
+    {
+        "title":"悠然MC服务器：所有版本",
+        "id":"v2/list",
+        "ext":[
+            "versions"
+        ]
+    },
+    {
+        "title":"404",
+        "id":"v2/404"
     }
 ]

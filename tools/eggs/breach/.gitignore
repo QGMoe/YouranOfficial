@@ -1,0 +1,8 @@
+# 构建产物与依赖：可读单文件、terser
+08-breach.src.js
+node_modules/
+package-lock.json
+# 截图、录音、录屏不入库
+shots/
+*.wav
+*.webm

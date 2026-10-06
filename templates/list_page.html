@@ -1,0 +1,205 @@
+{#- 新版 /list：整合包版本列表（方案 E2：按整合包类型切换，最新区与历史表一起切换）。
+    数据由 scripts/versions.py 整理（vlist）；历史版本 /v1/list、/v2/list 使用 v2/list.html，两者不要合并。 -#}
+{% extends "_base.html" %}
+
+{% block head %}
+	<link rel="stylesheet" href="/assets/list.css">
+{% endblock %}
+
+{#- 下载来源徽标（装饰性，aria-hidden；文字标签总在旁边） -#}
+{% macro prov(e, cls="prov") -%}
+<span class="{{ cls }} prov-{{ e.provider }}" aria-hidden="true">
+{%- if e.provider in vlist.simple_icons %}<svg class="pi" viewBox="0 0 24 24" focusable="false"><path fill="currentColor" d="{{ vlist.simple_icons[e.provider] }}"/></svg>
+{%- else %}{{ icon(("package" if e.pack == "mcbbs" else "download") if e.provider == "dlyr" else ("link" if e.provider == "generic" else "cloud"), "pi pi-line") }}{% endif -%}
+</span>
+{%- endmacro %}
+
+{% macro copy_btn(text) -%}
+<button type="button" class="copy-btn" data-copy="{{ text }}" hidden>{{ icon('copy') }}<span class="copy-text">复制</span></button>
+{%- endmacro %}
+
+{#- 提取码：无 JS 时就是文字；有 JS 时多一个“复制”按钮 -#}
+{% macro code_chip(e) -%}
+{% if e.code %}<span class="code-chip"><span class="code-k">{{ e.code_label }}</span><code>{{ e.code }}</code>{{ copy_btn(e.code) }}</span>{% endif %}
+{%- endmacro %}
+
+{% macro dl_link(e) -%}
+<span class="dl-item">
+{%- set ext = e.provider != "dlyr" -%}
+<a class="dl-link" href="{{ e.url }}"{% if ext %} target="_blank" rel="noopener"{% endif %}>{{ prov(e) }}<span class="dl-name">{{ e.name }}{% if e.show_prov_label %} <span class="prov-label">{{ e.prov_label }}</span>{% endif %}</span>{% if ext %}<span class="sr">（新窗口打开）</span>{% endif %}</a>
+{{- code_chip(e) -}}
+</span>
+{%- endmacro %}
+
+{#- 某类型的主按钮：下载站直链显示“<类型>下载”；只在网盘提供时显示网盘名 -#}
+{% macro pack_btn(pk) -%}
+{%- set p = pk.primary -%}
+{%- set ext = p.provider != "dlyr" -%}
+<a class="button primary big" href="{{ p.url }}"{% if ext %} target="_blank" rel="noopener"{% endif %}>
+{%- if ext %}{{ prov(p, "prov prov-in-btn") }}{{ p.name }}下载<span class="sr">（{{ pk.label }}，新窗口打开）</span>{% else %}{{ icon('download') }}{{ pk.label }}下载{% endif -%}
+</a>
+{{- code_chip(p) -}}
+{%- endmacro %}
+
+{#- 某类型的其他下载方式（最新区）：HMCL 导入（仅普通客户端）、各网盘、QQ 群 -#}
+{% macro pack_ways(pk) -%}
+<ul class="dl-list e-ways">
+	{%- if pk.key == "normal" %}
+	<li><span class="dl-item e-manifest"><span class="prov prov-dlyr" aria-hidden="true">{{ icon('link', 'pi pi-line') }}</span><span class="e-way-k">从互联网下载整合包</span><code>https://dl-yr.qg.mo.cn/server-manifest.json</code>{{ copy_btn("https://dl-yr.qg.mo.cn/server-manifest.json") }}</span></li>
+	{%- endif %}
+	{%- for e in pk.others %}
+	<li>{{ dl_link(e) }}</li>
+	{%- endfor %}
+	<li>{{ dl_link(vlist.qq) }}</li>
+</ul>
+{%- endmacro %}
+
+{#- 索引表里某类型的单元格：文件名（主链接）+ 该类型自己的“其他 n” -#}
+{% macro pack_cell(v, key) -%}
+{%- set pk = v.pack_map.get(key) -%}
+{%- if v.pending and key == "normal" %}<span class="state state-pending">{{ icon('clock') }}待补</span>
+{%- elif pk %}
+{%- set p = pk.primary %}{% set ext = p.provider != "dlyr" -%}
+<a class="c-file" href="{{ p.url }}"{% if ext %} target="_blank" rel="noopener"{% endif %}>{{ prov(p, "prov prov-sm") }}{{ pk.file_label }}{% if ext %}<span class="sr">（{{ p.name }}，新窗口打开）</span>{% endif %}</a>
+{%- if ext and pk.file_label != p.name %}<span class="c-via">{{ p.name }}</span>{% endif %}
+{{- code_chip(p) }}
+{%- if pk.others %}
+<details class="pop">
+	<summary>{{ icon('more') }}<span>其他 {{ pk.others|length }}</span><span class="sr">种{{ pk.label }}下载方式：{{ v.id }}</span></summary>
+	<div class="pop-panel"><ul class="dl-list">{% for e in pk.others %}<li>{{ dl_link(e) }}</li>{% endfor %}</ul></div>
+</details>
+{%- endif %}
+{%- else %}<span class="e-none" aria-hidden="true">—</span><span class="sr">无</span>
+{%- endif %}
+{%- endmacro %}
+
+{% macro brief_cell(v) -%}
+{%- if v.brief_long %}<details class="c-brief"><summary>{{ v.brief_short }}</summary><div>{{ v.brief_html|safe }}</div></details>
+{%- else %}{{ v.brief_html|safe }}{% endif %}
+{%- if v.changelog %}<a class="c-log" href="/update#{{ v.changelog }}">更新日志<span class="sr">：{{ v.id }}</span></a>{% endif %}
+{%- endmacro %}
+
+{% block main %}
+<div class="page-head">
+	<div class="wrap">
+		<h1>客户端所有版本列表</h1>
+		<p class="lead muted">我们服务器会常常不定期更新整合包。</p>
+	</div>
+</div>
+<div class="wrap content ve2">
+	{#- 类型切换：两个单选框 + CSS :checked，不需要 JS；键盘用方向键切换 #}
+	<input type="radio" name="pack" id="tab-normal" class="e2-radio" checked>
+	<input type="radio" name="pack" id="tab-mcbbs" class="e2-radio">
+	<div class="e2-tabs">
+		{%- for key, pk in vlist.packs.items() %}
+		<label for="tab-{{ key }}" class="e2-tab e2-tab-{{ key }}">{{ icon('monitor' if key == 'normal' else 'package') }}<span class="e2-tab-text"><span class="e2-tab-label">{{ pk.label }}</span><span class="e2-tab-sub">{{ pk.launcher }}</span></span></label>
+		{%- endfor %}
+	</div>
+
+	{%- set v = vlist.latest %}
+	{%- if v %}
+	<section class="d-latest block e-latest e2-latest" id="{{ v.anchor }}" aria-labelledby="t-latest">
+		<div class="d-latest-head">
+			<h2 id="t-latest" class="e-latest-title">{{ v.id }} {{ v.title }} <span class="tag tag-latest">最新</span></h2>
+			<p class="d-facts muted">{{ v.date }}
+				{%- if v.size_text %}<span class="e2-for-normal"> · {{ v.size_text }}</span>{% endif %}
+				{%- if v.mcbbs_size_text %}<span class="e2-for-mcbbs"> · {{ v.mcbbs_size_text }}</span>{% endif %}
+				{%- if site.pack.version == v.id and site.pack.game %} · Minecraft {{ site.pack.game }}{% endif %}
+				{%- if site.pack.version == v.id and site.pack.forge %} · Forge {{ site.pack.forge }}{% endif %}
+				{%- if v.changelog %} · <a href="/update#{{ v.changelog }}">更新日志</a>{% endif %}</p>
+		</div>
+		{%- for pk in v.packs %}
+		<div class="e2-panel e2-for-{{ pk.key }}">
+			<div class="e2-panel-main">
+				<h3 class="sr">{{ pk.label }}</h3>
+				<p class="e-desc muted">{{ pk.desc }}</p>
+				<div class="e1-main">{{ pack_btn(pk) }}</div>
+				<p class="d-file">{{ pk.file_label }}</p>
+			</div>
+			<div class="e2-panel-ways">{{ pack_ways(pk) }}</div>
+		</div>
+		{%- endfor %}
+	</section>
+	{%- endif %}
+
+	<section id="era-youranserver" aria-labelledby="t-yr">
+		<h2 class="group-title" id="t-yr">{{ vlist.era_names[2] }}<span class="e2-now e2-for-normal">{{ vlist.packs.normal.label }}</span><span class="e2-now e2-for-mcbbs">{{ vlist.packs.mcbbs.label }}</span></h2>
+		<div class="table-wrap">
+		<table class="c-table e2-table">
+			<caption class="sr">{{ vlist.era_names[2] }}</caption>
+			<thead><tr>
+				<th scope="col"><span class="e2-for-normal">{{ vlist.packs.normal.label }}</span><span class="e2-for-mcbbs">{{ vlist.packs.mcbbs.label }}</span></th>
+				<th scope="col">版本号</th><th scope="col">更新名</th><th scope="col">大小</th><th scope="col">发布时间</th><th scope="col">更新信息</th>
+			</tr></thead>
+			<tbody>
+			{%- for v in vlist.rows %}
+				<tr id="{{ v.anchor }}"{% if 'mcbbs' not in v.pack_map %} class="no-mcbbs"{% endif %}>
+					<td class="c-f e2-dl"><div class="e2-for-normal">{{ pack_cell(v, 'normal') }}</div><div class="e2-for-mcbbs">{{ pack_cell(v, 'mcbbs') }}</div></td>
+					<th scope="row" class="c-id">{{ v.id }}</th>
+					<td class="c-t">{{ v.title }}</td>
+					<td class="c-s"><span class="e2-for-normal">{{ v.size_text or "" }}</span><span class="e2-for-mcbbs">{{ v.mcbbs_size_text or "" }}</span></td>
+					<td class="c-d">{{ v.date }}</td>
+					<td class="c-b">{{ brief_cell(v) }}</td>
+				</tr>
+			{%- endfor %}
+			</tbody>
+		</table>
+		</div>
+	</section>
+
+	<section aria-labelledby="t-13">
+		<h2 class="group-title" id="t-13">{{ vlist.era_names[1] }}</h2>
+		<details class="block era-gone" id="era-13server">
+			<summary>
+				<span class="era-gone-title">{{ icon('archive') }}<span>{{ vlist.era_names[1] }}</span><span class="count">{{ vlist.gone|length }}</span></span>
+				<span class="state state-gone">{{ icon('ban') }}文件已不再提供</span>
+				{{ icon('chevron-down', 'i chev') }}
+			</summary>
+			<ul class="gone-list">
+			{%- for v in vlist.gone %}
+				<li id="{{ v.anchor }}">
+					<span class="g-id">{{ v.id }}</span>
+					<span class="g-title">{{ v.title }}</span>
+					<span class="g-meta">{{ v.date }}{% if v.size_text %} · {{ v.size_text }}{% endif %}</span>
+					<span class="g-brief">{{ v.brief_html|safe }}</span>
+				</li>
+			{%- endfor %}
+			</ul>
+		</details>
+	</section>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+(function () {
+	/* 增强：给提取码、manifest 地址加“复制”按钮；无 JS 时文字照样可见、可手动选取 */
+	document.querySelectorAll('.copy-btn').forEach(function (b) {
+		b.hidden = false;
+		b.addEventListener('click', function () {
+			var t = b.getAttribute('data-copy'), label = b.querySelector('.copy-text');
+			var done = function () { label.textContent = '已复制'; setTimeout(function () { label.textContent = '复制'; }, 1600); };
+			if (navigator.clipboard && window.isSecureContext) { navigator.clipboard.writeText(t).then(done, function () {}); return; }
+			var ta = document.createElement('textarea'); ta.value = t; ta.setAttribute('readonly', ''); ta.style.position = 'fixed'; ta.style.opacity = '0';
+			document.body.appendChild(ta); ta.select(); try { document.execCommand('copy'); done(); } catch (e) {} document.body.removeChild(ta);
+		});
+	});
+	/* 锚点 #v版本号：在折叠区里就展开；在 MCBBS 视图里被隐藏的行，切回普通客户端 */
+	function openHash() {
+		var h = decodeURIComponent(location.hash.slice(1)), el = h && document.getElementById(h);
+		if (!el) return;
+		for (var p = el.parentElement; p; p = p.parentElement) if (p.tagName === 'DETAILS') p.open = true;
+		if (!el.offsetParent) { var n = document.getElementById('tab-normal'); if (n) n.checked = true; }
+		el.scrollIntoView();
+	}
+	window.addEventListener('hashchange', openHash);
+	openHash();
+	/* 桌面上“其他”是浮层时，同一时间只开一个；点外面或 Esc 关闭。手机上是原地展开，不干预 */
+	var pops = [].slice.call(document.querySelectorAll('details.pop'));
+	var floating = function (d) { var p = d.querySelector('.pop-panel'); return p && getComputedStyle(p).position === 'absolute'; };
+	pops.forEach(function (d) { d.addEventListener('toggle', function () { if (d.open && floating(d)) pops.forEach(function (o) { if (o !== d) o.open = false; }); }); });
+	document.addEventListener('click', function (e) { pops.forEach(function (d) { if (d.open && floating(d) && !d.contains(e.target)) d.open = false; }); });
+	document.addEventListener('keydown', function (e) { if (e.key === 'Escape') pops.forEach(function (d) { if (d.open && floating(d)) { d.open = false; d.querySelector('summary').focus(); } }); });
+})();
+</script>
+{% endblock %}

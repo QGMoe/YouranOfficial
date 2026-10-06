@@ -1,27 +1,27 @@
 
 如果你想要游玩我们的服务器，请点击**下方按钮**直接下载客户端，或采用下面给出的其他下载方式。
 
-另外，非常建议你去阅读[服务器网页手册](https://docs.youran.qingu.moe/)来了解我们服务器。（注；服务器网页手册基于Github，访问速度较慢）
+另外，非常建议你去阅读[服务器网页手册](https://docs.youran.qingu.moe/)来了解我们服务器。（注：服务器网页手册基于Github，访问速度较慢）
 
-<div class="btn-box">
-    <a target="_blank" href="https://dl-yr.qg.mo.cn/YouranServer.zip"> 下载客户端 </a>
+<div class="download-box" markdown="1">
+<div class="download-main" markdown="1">
+[下载客户端](https://dl-yr.qg.mo.cn/YouranServer.zip){: .button .primary .big data-icon="download" }
+
+你也可以点击[此处](/list)浏览全部客户端版本（这有啥用）
+</div>
+<div class="download-alt" markdown="1">
+#### 其他下载方式
+
+1. [微云网盘下载](https://share.weiyun.com/EppMjuK3)
+2. [加入服务器QQ群下载](https://jq.qq.com/?_wv=1027&k=Hwv4w2NU)
+</div>
 </div>
 
-<br />
-<br />
+### 安装 {: #install }
 
-##### 其他下载方式
-
-1. [微云网盘下载](https://share.weiyun.com/KVmBfzZ8)
-2. [加入服务器QQ群下载](https://jq.qq.com/?_wv=1027&k=Hwv4w2NU)
-
-<br />
-
-你也可以点击[此处](/list.html)浏览全部客户端版本（这有啥用）
-
-<h3><a name="install">安装</a></h3>
-<p style="color:red">
-    注意：我们服务器的整合包比较特殊，是专门使用HMCL启动器制作的服务器自动更新整合包，必须要使用HMCL启动器安装（所以如果你正在使用其他启动器，将会比较麻烦）。如果你使用的是Plain Craft Launcher 2或其他启动器，且怕麻烦的话，请试试我们自1.8.2版本开始尝试制作的MCBBS标准整合包。如果你要下载这个整合包，请<a target="_blank" href="https://dl-yr.qg.mo.cn/YouranServer%20MCBBS.zip">点此</a>下载，或前往服务器整合包版本列表获取更多下载方式。</p>
+<div class="callout warn" role="note" data-icon="alert" markdown="1">
+注意：我们服务器的整合包比较特殊，是专门使用HMCL启动器制作的服务器自动更新整合包，必须要使用HMCL启动器安装（所以如果你正在使用其他启动器，将会比较麻烦）。如果你使用的是Plain Craft Launcher 2或其他启动器，且怕麻烦的话，请试试我们自1.8.2版本开始尝试制作的MCBBS标准整合包。如果你要下载这个整合包，请<a target="_blank" href="https://dl-yr.qg.mo.cn/YouranServer%20MCBBS.zip">点此</a>下载，或前往服务器整合包版本列表获取更多下载方式。
+</div>
 
 #### ①
 
@@ -31,36 +31,35 @@
 
 点击左侧的版本列表，在“版本列表”界面的上面一栏中找到“安装整合包”
 
-![](6.png)
+![HMCL 版本列表界面，上方一栏的“安装整合包”已用红圈标出](6.png)
 
 #### ③
 
-在安装整合包界面，你可以将已经下载的整合包文件导入到启动器中（直接拖入最简单了），也可以采用从互联网下载整合包的方式，填入“https://dl-yr.qg.mo.cn/server-manifest.json”也可以安装。
+在安装整合包界面，你可以将已经下载的整合包文件导入到启动器中（直接拖入最简单了），也可以采用从互联网下载整合包的方式，填入“`https://dl-yr.qg.mo.cn/server-manifest.json`”也可以安装。
 
-![](7.png)
+![HMCL 安装整合包界面：可导入本地文件或从互联网下载](7.png)
 
 #### ④
 
 在弹出的界面中，确认整合包信息，然后点击安装即可
 
-![](2.png)
+![确认整合包信息的界面，右下角为“安装”按钮](2.png)
 
 当弹出“安装成功”时，整合包就安装成功了！
 
-![](3.png)
+![“安装成功”提示框](3.png)
 
-<br />
-<br />
+### 获取网页帐号
 
-### 获取白名单
+点击官网右上角的[网页面板](https://portal-youran.qingu.moe)，前往网页面板注册并等待帐号审核！
 
-加入服务器QQ群：[953168624](https://jq.qq.com/?_wv=1027&k=Hwv4w2NU)，申请白名单！
+您也可以加入服务器QQ群：[953168624](https://jq.qq.com/?_wv=1027&k=Hwv4w2NU)，但这并不是必需的，我们也有一些玩家不在 QQ 群里面。
 
 ### 服务器地址
 
 我们服务器的地址是：**serv.youran.qingu.moe:23103**，欢迎游玩！。另外，点击[这里](https://docs.youran.qingu.moe/)可以前往服务器网页手册。（注：服务器网页手册基于Github，访问速度较慢）
 
-<h3><a name="update">更新</a></h3>
+### 更新 {: #update }
 
 我们服务器会常常不定期更新整合包。
 
@@ -70,18 +69,18 @@
 
 点击左侧的版本列表，在弹出的界面中找到已经安装的整合包
 
-![](5.png)
+![HMCL 版本列表中已安装的 YouranServer 整合包](5.png)
 
 #### ②
 
 点击整合包右侧的时钟状更新按钮，在弹出的界面中将新版整合包文件拖入
 
-![](8.png)
+![整合包右侧的时钟状更新按钮](8.png)
 
-![](7.png)
+![拖入新版整合包文件的界面](7.png)
 
 #### ③
 
 点击安装即可
 
-![](2.png)
+![确认整合包信息并点击安装](2.png)

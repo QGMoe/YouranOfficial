@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>breach harness</title><link rel="icon" href="data:,">
+<style>
+:root{--bg:#fff;--text:#1f2328;--muted:#5d6570;--border:#e5e2de;--surface-2:#f7f5f3;--accent:#2a7247;--accent-soft:#cfe3d6;--radius:10px;--mono:ui-monospace,monospace}
+:root[data-theme=dark]{--bg:#111315;--text:#e7e9ec;--muted:#9ea5af;--border:#2c3036;--surface-2:#1a1d20;--accent:#5cbf83;--accent-soft:#24402f}
+body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,sans-serif}
+.wrap{max-width:760px;margin:0 auto;padding:16px}
+.button{font:inherit;padding:8px 18px;border-radius:8px;border:1px solid var(--border);background:var(--accent);color:#fff}
+</style></head>
+<body><div class="wrap"><div id="root"></div></div>
+<script type="module">
+const __k0 = Object.keys(window);
+const qs = new URLSearchParams(location.search);
+const n = qs.get('n') || '12';
+const theme = qs.get('theme') || 'light';
+document.documentElement.setAttribute('data-theme', theme);
+let h = 0x811c9dc5; for (const ch of n) { h ^= ch.charCodeAt(0); h = Math.imul(h, 0x01000193); } h >>>= 0;
+const G = 8, abs = n.replace('-', '');
+const cycle = Math.floor(Number(abs) / G);
+const store = {};
+const ac = new AbortController();
+const cbs = [];
+// ctx.audio：直接用宿主的真实实现（dist/assets/egg/audio.js）。在仓库根目录起静态服务器后打开 /tools/eggs/breach/harness.html。?audio 开声音；?audio=offline&dur=秒 注入 OfflineAudioContext
+const HA = await import('../../../dist/assets/egg/audio.js');
+const aq = qs.get('audio');
+if (aq === 'offline') HA._setFactory(() => new OfflineAudioContext(2, 44100 * +(qs.get('dur') || 20), 44100));
+HA.setOn(aq !== null);
+const hostAbort = new AbortController();
+const audio = HA.forGame(hostAbort.signal);
+audio.set = (v) => HA.setOn(v);
+Object.defineProperty(window, '__ac', { configurable: true, get: () => HA._state().ctx });
+window.__audio = audio;
+const ctx = { audio: qs.has('noaudioapi') ? undefined : audio, cycleMod: (p) => Number((BigInt(abs) / BigInt(G)) % BigInt(p)), n, cycle, seed: h, negative: n.startsWith('-'), theme: () => theme, onThemeChange: (cb) => cbs.push(cb),
+  color: (v) => getComputedStyle(document.documentElement).getPropertyValue(v).trim(),
+  storage: { get: (k) => k in store ? JSON.parse(store[k]) : null, set: (k, v) => { store[k] = JSON.stringify(v); } },
+  // ctx.href：同宿主规则（正数 n 加 delta×G，负数 n 减 delta×G，落到 0～3 或越过 0 时为 null）；&nohref 模拟拿到 null
+  href: (d) => { if (qs.has('nohref')) return null; const neg = n.startsWith('-'), m = BigInt(abs) + BigInt(d) * BigInt(G); if (m < 0n || (!neg && m < 4n)) return null; return '/v' + (neg ? '-' : '') + m; },
+  reducedMotion: qs.has('rm'), signal: ac.signal };
+const mod = await import('../../../dist/assets/egg/games/08-breach.js?v=' + Date.now());
+window.__game = mod.default.mount(document.getElementById('root'), ctx);
+window.__remount = () => { window.__game.unmount(); window.__game = mod.default.mount(document.getElementById('root'), ctx); };
+window.__leak = () => Object.keys(window).filter(k => !__k0.includes(k) && !['__ready', '__game', '__remount', '__leak', '__audio', '__ac'].includes(k));
+window.__ready = true;
+</script></body></html>

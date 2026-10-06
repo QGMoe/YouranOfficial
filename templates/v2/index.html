@@ -1,0 +1,158 @@
+{% extends "v2/_base.html" %}
+
+{% block first_area %}
+	<section class="slider_section position-relative">
+		<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+			<div class="carousel-inner">
+				<div class="carousel-item active">
+					<div class="container">
+						<div class="col-lg-10 col-md-11 mx-auto">
+							<div class="detail-box">
+								<div>
+									{{markdowns.intro}}
+									<div class="">
+										<a href="#download">加 入 服 务 器</a>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+{% endblock %}
+
+{% block content %}
+	<section class="feature_section layout_padding">
+		<div class="container">
+			<div class="heading_container">
+				<h2>特色</h2>
+			</div>
+
+			<div class="feature_container">
+				<div class="row">
+					<div class="col-lg-3 col-md-6">
+						<div class="box">
+							<div class="img-box">
+								<i class="fa-solid fa-pencil fa-2xl" style="color: #FF6633;"></i>
+							</div>
+							<div class="detail-box">
+								<h5>少许魔改</h5>
+								<p>
+									我们为了让各个模组能够互相联动，利用一些魔改模组修改或新增了一些东西。
+								</p>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-3 col-md-6">
+						<div class="box">
+							<div class="img-box">
+								<i class="fa-solid fa-layer-group fa-2xl" style="color: #FF6633;"></i>
+							</div>
+							<div class="detail-box">
+								<h5>安全备份</h5>
+								<p>
+									服务器每天都会对存档进行两次备份，并重点备份玩家数据，基本不用担心数据丢失！
+								</p>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-3 col-md-6">
+						<div class="box">
+							<div class="img-box">
+								<i class="fa-solid fa-signal fa-2xl" style="color: #FF6633;"></i>
+							</div>
+							<div class="detail-box">
+								<h5>离线模式</h5>
+								<p>
+									我们是离线服务器，不需要玩家需要正版账号。但我们同时也通过开启白名单、加装登录插件等方式来防止玩家恶意破坏。
+								</p>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-3 col-md-6">
+						<div class="box">
+							<div class="img-box">
+								<i class="fa-regular fa-heart fa-2xl" style="color: #FF6633;"></i>
+							</div>
+							<div class="detail-box">
+								<h5>公益服！</h5>
+								<p>
+									我们是公益服，不需要花费任何一分钱即可游玩。当然你想要无偿赞助也不是不可以。
+								</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="disadvantage_section layout_padding">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12 mx-auto">
+					<div class="detail-box">
+						{{markdowns.disadvantages}}
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="download_section layout_padding">
+		<div class="container">
+			<div class="heading_container">
+				<h2><a name="download">加入服务器</a></h2>
+			</div>
+			<div class="row">
+				<div class="col-md-12 mx-auto">
+					<div class="detail-box">
+						{{markdowns.join}}
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="info_section layout_padding2">
+		<div class="container">
+			<div class="info_items">
+				<a href="#">
+					<div class="item">
+						<i class="fa-solid fa-server fa-2xl" style="color: #ffffff;"></i>
+						<br />
+						<div class="detail-box">
+							<p>server.youranserver.top</p>
+						</div>
+					</div>
+				</a>
+				<a target="_blank" href="https://jq.qq.com/?_wv=1027&k=Hwv4w2NU">
+					<div class="item">
+						<i class="fa-brands fa-qq fa-2xl" style="color: #ffffff;"></i>
+						<br />
+						<div class="detail-box">
+							<p>953168624</p>
+						</div>
+					</div>
+				</a>
+				<a href="#">
+					<div class="item">
+						<i class="fa-solid fa-house fa-2xl" style="color: #ffffff;"></i>
+						<br />
+						<div class="detail-box">
+							<p>youran.qingu.moe</p>
+						</div>
+					</div>
+				</a>
+			</div>
+		</div>
+		<div style="text-align: center;">
+			<p style="color: #ffffff;">本服务器由旋律云驱动，<a target="_blank" href="https://www.rhymc.com/aff.php?aff=1140">了解旋律云</a></p>
+		</div>
+		<div style="text-align: center;">
+			<img src="https://status.qingu.moe/api/badge/18/status?style=for-the-badge"/>
+		</div>
+	</section>
+{% endblock %}

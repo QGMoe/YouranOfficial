@@ -5,7 +5,8 @@
         "size":"2875KB",
         "brief":"添加了离线皮肤MOD（CustomSkinLoader）",
         "time":"2021-9-20",
-        "era":1
+        "era":1,
+        "file_status":"N"
     },
     {
         "title":"暮色更新",
@@ -13,7 +14,8 @@
         "size":"27442KB",
         "brief":"添加了暮色森林MOD（twilightforest）",
         "time":"2021-9-27",
-        "era":1
+        "era":1,
+        "file_status":"N"
     },
     {
         "title":"传送门缓存更新",
@@ -21,7 +23,8 @@
         "size":"27453KB",
         "brief":"添加了传送门超级缓存MOD（portalsupercache）",
         "time":"2021-9-27",
-        "era":1
+        "era":1,
+        "file_status":"N"
     },
     {
         "title":"整合包BUG修复",
@@ -29,7 +32,8 @@
         "size":"27453KB",
         "brief":"修复了整合包无法使用的问题",
         "time":"2021-9-27",
-        "era":1
+        "era":1,
+        "file_status":"N"
     },
     {
         "title":"稳定性更新",
@@ -37,7 +41,8 @@
         "size":"28415KB",
         "brief":"添加了磷优化模组（phosphor）",
         "time":"2021-9-28",
-        "era":1
+        "era":1,
+        "file_status":"N"
     },
     {
         "title":"失落更新",
@@ -45,7 +50,8 @@
         "size":"29189KB",
         "brief":"添加了失落的城市和配套的失落的灵魂模组（lostcities and lostsouls）",
         "time":"2021-9-29",
-        "era":1
+        "era":1,
+        "file_status":"N"
     },
     {
         "title":"音乐测试",
@@ -53,7 +59,8 @@
         "size":"32793KB",
         "brief":"添加了MCDJ！和两首曲子！",
         "time":"2021-9-30",
-        "era":1
+        "era":1,
+        "file_status":"N"
     },
     {
         "title":"音乐更新",
@@ -61,7 +68,8 @@
         "size":"78378KB",
         "brief":"添加了许多曲子！",
         "time":"2021-9-30",
-        "era":1
+        "era":1,
+        "file_status":"N"
     },
     {
         "title":"次要更新",
@@ -69,7 +77,8 @@
         "size":"78571KB",
         "brief":"增加了线程优化模组（TickThreading）",
         "time":"2021-10-2",
-        "era":1
+        "era":1,
+        "file_status":"N"
     },
     {
         "title":"重要更新",
@@ -77,7 +86,8 @@
         "size":"92497KB",
         "brief":"增加了自定义模组（CraftTweaker）和更多音乐",
         "time":"2021-10-3",
-        "era":1
+        "era":1,
+        "file_status":"N"
     },
     {
         "title":"？？？更新",
@@ -85,7 +95,8 @@
         "size":"104600KB",
         "brief":"①加入了区块加载器mod（ChickenChunks）和其前置模组CodeChicken Lib（CCL）②加入了SCP: Lockdown ③优化了服务器",
         "time":"2021-10-6",
-        "era":1
+        "era":1,
+        "file_status":"N"
     },
     {
         "title":"烟花苦力怕更新",
@@ -207,10 +218,6 @@
             {
                 "name":"百度网盘（提取码：yran）",
                 "addr":"https://pan.baidu.com/s/1xt6H9PMeYiCQAwmPcLQ8qw"
-            },
-            {
-                "name":"城通网盘（访问密码：5232）",
-                "addr":"https://url11.ctfile.com/f/22237211-542053397-b1024a"
             }
         ],
         "id":"1.7.2",
@@ -229,10 +236,6 @@
             {
                 "name":"百度网盘（提取码：yran）",
                 "addr":"https://pan.baidu.com/s/1Pt1XNZOsVjxTZUqUeVz13A"
-            },
-            {
-                "name":"城通网盘（访问密码：5232）",
-                "addr":"https://url11.ctfile.com/f/22237211-546372705-1ab566"
             }
         ],
         "brief":"更改了下载服务器到国内腾讯云服务器。现在下载非常快了！",
@@ -251,10 +254,6 @@
             {
                 "name":"百度网盘（提取码：yran）",
                 "addr":"https://pan.baidu.com/s/1PGC_LccdpNYnliXOFKMmeg"
-            },
-            {
-                "name":"城通网盘（访问密码：5232）",
-                "addr":"https://url11.ctfile.com/f/22237211-547388578-7281d4"
             }
         ],
         "id":"1.7.3",
@@ -272,10 +271,6 @@
             {
                 "name":"百度网盘（提取码：yran）",
                 "addr":"https://pan.baidu.com/s/1ke4vRvzbyf2ilFUbrlgfMQ"
-            },
-            {
-                "name":"城通网盘（访问密码：5232）",
-                "addr":"https://url11.ctfile.com/f/22237211-556356462-deae82"
             }
         ],
         "id":"1.7.4",
@@ -293,10 +288,6 @@
             {
                 "name":"百度网盘（提取码：yran）",
                 "addr":"https://pan.baidu.com/s/1wvsgMKtSDdpcoJ0Ll0aV-Q"
-            },
-            {
-                "name":"城通网盘（访问密码：5232）",
-                "addr":"https://url11.ctfile.com/f/22237211-560636253-1ab332"
             }
         ],
         "id":"1.8.0",
@@ -315,10 +306,6 @@
             {
                 "name":"百度网盘（提取码：yran）",
                 "addr":"https://pan.baidu.com/s/1mwDJeSIM8bETWlAWMirLlA"
-            },
-            {
-                "name":"城通网盘（访问密码：5232）",
-                "addr":"https://url11.ctfile.com/f/22237211-609708774-1c44dd?p=5232"
             }
         ],
         "brief":"在1.8.0版本中，矿泉水湖会在已加载的区块中尝试生成，可能会覆盖一些人工建筑。更新后，矿泉水湖将不会再主世界生成，而仅在暮色森林中尝试生成。同时，进一步降低了矿泉水湖生成的几率，从原来的每区块3‰改为每区块2‰。具体更新信息见服务器更新日志。",
@@ -337,10 +324,6 @@
             {
                 "name":"百度网盘（提取码：yran）",
                 "addr":"https://pan.baidu.com/s/1cYO3tjM_lpDhrf5d0ahnjw"
-            },
-            {
-                "name":"城通网盘（访问密码：5232）",
-                "addr":"https://url11.ctfile.com/f/22237211-753204010-e670a7?p=5232"
             }
         ],
         "brief":"此次更新为模组互通更新，虽然加入了两个新的小模组，但主要是对原有模组的一个修改（魔改）。具体更新内容见官网。",
@@ -393,6 +376,7 @@
         "brief":"此次更新优化了模组间的联动，并添加了一些新的东西。",
         "id":"1.8.2",
         "size":"197199KB",
+        "mcbbs_size":"197200KB",
         "time":"2023-7-4",
         "era":2
     },
@@ -421,6 +405,7 @@
         "brief":"此次更新优化了模组间的联动，并添加了一些新的东西。",
         "id":"1.8.3",
         "size":"198123KB",
+        "mcbbs_size":"198123KB",
         "time":"2023-8-2",
         "era":2
     },
@@ -450,6 +435,7 @@
         "brief":"此次更新修复了一些问题。",
         "id":"1.8.3.1",
         "size":"198113KB",
+        "mcbbs_size":"198113KB",
         "time":"2023-8-4",
         "era":2
     },
@@ -470,7 +456,43 @@
         ],
         "id":"2.0.0.0",
         "size":"196956KB",
+        "mcbbs_size":"196957KB",
         "time":"2026-6-24",
+        "era":2
+    },
+    {
+        "title":"重生之小修小补更新",
+        "id":"2.0.0.1",
+        "link":"https://share.weiyun.com/H1DLriC7",
+        "mcbbs_links":[
+            {
+                "name":"微云网盘",
+                "addr":"https://share.weiyun.com/ihidjeIx"
+            }
+        ],
+        "size":"196101KB",
+        "mcbbs_size":"196101KB",
+        "time":"2026-6-26",
+        "era":2
+    },
+    {
+        "title":"国庆更新",
+        "id":"2.1.0",
+        "links":[
+            {
+                "name":"微云网盘",
+                "addr":"https://share.weiyun.com/EppMjuK3"
+            }
+        ],
+        "mcbbs_links":[
+            {
+                "name":"微云网盘",
+                "addr":"https://share.weiyun.com/S5CarFGc"
+            }
+        ],
+        "size":"197301KB",
+        "mcbbs_size":"197302KB",
+        "time":"2026-10-1",
         "era":2
     }
 ]
