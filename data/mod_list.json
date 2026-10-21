@@ -979,5 +979,23 @@
         "mode": "P",
         "link": "https://portal-youran.qingu.moe",
         "link_name": "网页面板"
+    },
+    {
+        "raw": "YouranTab",
+        "ver": "0.1.0",
+        "time": "2026年10月12日",
+        "comment": "自研的Tab信息插件",
+        "mode": "P",
+        "link": "https://youran.qingu.moe",
+        "link_name": "服务器官网"
+    },
+    {
+        "raw": "YouranAPI",
+        "ver": "0.3.0",
+        "time": "2026年10月12日",
+        "comment": "提供本地的http服务接口，供面板和悠然地图与服务器交互",
+        "mode": "P",
+        "link": "https://youran.qingu.moe",
+        "link_name": "服务器官网"
     }
 ]

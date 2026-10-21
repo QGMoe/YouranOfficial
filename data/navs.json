@@ -39,6 +39,21 @@
                 "outlink":true
             },
             {
+                "name":"悠然地图（公测）",
+                "link":"https://map.youran.qingu.moe/",
+                "outlink":true
+            },
+                     {
+                "name":"悠然地图[镜像]（公测）",
+                "link":"https://mirror.map.youran.qingu.moe/",
+                "outlink":true
+            },
+                     {
+                "name":"经典版悠然地图",
+                "link":"https://classic.map.youran.qingu.moe/",
+                "outlink":true
+            },
+            {
                 "name":"服务器网页手册",
                 "link":"https://docs.youran.qingu.moe/",
                 "outlink":true
