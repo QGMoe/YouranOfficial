@@ -494,5 +494,25 @@
         "mcbbs_size":"197302KB",
         "time":"2026-10-1",
         "era":2
+    },
+    {
+        "title":"？？？？更新",
+        "id":"2.2.0.0",
+        "links":[
+            {
+                "name":"微云网盘",
+                "addr":"https://share.weiyun.com/JrBEdz2l"
+            }
+        ],
+        "mcbbs_links":[
+            {
+                "name":"微云网盘",
+                "addr":"https://share.weiyun.com/pHpi3zwv"
+            }
+        ],
+        "size":"197462KB",
+        "mcbbs_size":"197463KB",
+        "time":"2026-11-3",
+        "era":2
     }
 ]

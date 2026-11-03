@@ -39,17 +39,12 @@
         "is_direct":false,
         "children":[
             {
-                "name":"网页地图",
-                "link":"https://yr-map.qingu.moe/",
-                "outlink":true
-            },
-            {
-                "name":"悠然地图（公测）",
+                "name":"悠然地图",
                 "link":"https://map.youran.qingu.moe/",
                 "outlink":true
             },
                      {
-                "name":"悠然地图[镜像]（公测）",
+                "name":"悠然地图[镜像]",
                 "link":"https://mirror.map.youran.qingu.moe/",
                 "outlink":true
             },

@@ -10,7 +10,7 @@
     },
     {
         "raw": "Dynmap（Forge）",
-        "ver": "3.3 Beta-2",
+        "ver": "3.3-beta-2-ym3",
         "time": "2021年9月17日",
         "comment": "服务器网页地图",
         "mode": "S",
@@ -973,7 +973,7 @@
     },
     {
         "raw": "YouranAuth",
-        "ver": "0.5.3",
+        "ver": "0.5.6",
         "time": "2026年10月1日",
         "comment": "自研的帐号系统插件，替代 Authentic",
         "mode": "P",
@@ -991,7 +991,7 @@
     },
     {
         "raw": "YouranAPI",
-        "ver": "0.3.0",
+        "ver": "0.3.2",
         "time": "2026年10月12日",
         "comment": "提供本地的http服务接口，供面板和悠然地图与服务器交互",
         "mode": "P",

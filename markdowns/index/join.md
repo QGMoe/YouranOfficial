@@ -12,7 +12,7 @@
 <div class="download-alt" markdown="1">
 #### 其他下载方式
 
-1. [微云网盘下载](https://share.weiyun.com/EppMjuK3)
+1. [微云网盘下载](https://share.weiyun.com/JrBEdz2l)
 2. [加入服务器QQ群下载](https://jq.qq.com/?_wv=1027&k=Hwv4w2NU)
 </div>
 </div>
