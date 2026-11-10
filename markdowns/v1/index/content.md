@@ -69,7 +69,7 @@
 
 ### 服务器地址
 
-我们服务器的地址是：**serv.youran.qingu.moe:23103**，欢迎游玩！。另外，点击[这里](https://docs.youran.qingu.moe/)可以前往服务器网页手册。（注；服务器网页手册基于Github，访问速度较慢）
+我们服务器的地址是：**serv.youran.qingu.moe:21413**，欢迎游玩！。另外，点击[这里](https://docs.youran.qingu.moe/)可以前往服务器网页手册。（注；服务器网页手册基于Github，访问速度较慢）
 
 <h2><a name="5">更新</a></h2>
 

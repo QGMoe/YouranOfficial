@@ -997,5 +997,16 @@
         "mode": "P",
         "link": "https://youran.qingu.moe",
         "link_name": "服务器官网"
+    },
+    {
+        "raw": "YouranSCP",
+        "trans": "悠然 SCP",
+        "ver": "0.1.1",
+        "time": "2026年11月3日",
+        "comment": "魔改 SCP 模组",
+        "mode": "B",
+        "in_pack": true,
+        "link": "https://youran.qingu.moe",
+        "link_name": "服务器官网"
     }
 ]

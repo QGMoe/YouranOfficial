@@ -12,7 +12,7 @@
 <div class="download-alt" markdown="1">
 #### 其他下载方式
 
-1. [微云网盘下载](https://share.weiyun.com/JrBEdz2l)
+1. [微云网盘下载](https://share.weiyun.com/euuBRhy1)
 2. [加入服务器QQ群下载](https://jq.qq.com/?_wv=1027&k=Hwv4w2NU)
 </div>
 </div>
@@ -57,7 +57,7 @@
 
 ### 服务器地址
 
-我们服务器的地址是：**serv.youran.qingu.moe:23103**，欢迎游玩！。另外，点击[这里](https://docs.youran.qingu.moe/)可以前往服务器网页手册。（注：服务器网页手册基于Github，访问速度较慢）
+我们服务器的地址是：**serv.youran.qingu.moe:21413**，欢迎游玩！。另外，点击[这里](https://docs.youran.qingu.moe/)可以前往服务器网页手册。（注：服务器网页手册基于Github，访问速度较慢）
 
 ### 更新 {: #update }
 
