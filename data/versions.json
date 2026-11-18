@@ -534,5 +534,40 @@
         "mcbbs_size":"197502KB",
         "time":"2026-11-10",
         "era":2
+    },
+    {
+        "title":"数字更新",
+        "id":"2.3.0.0",
+        "links":[
+            {
+                "name":"微云网盘",
+                "addr":"https://share.weiyun.com/6QEViXV4"
+            }
+        ],
+        "mcbbs_links":[
+            {
+                "name":"微云网盘",
+                "addr":"https://share.weiyun.com/hSm1AMHR"
+            }
+        ],
+        "size":"206228KB",
+        "mcbbs_size":"206207KB",
+        "time":"2026-11-17",
+        "era":2
+    },
+    {
+        "title":"电视更新",
+        "id":"2.3.0.1",
+        "links":[
+            {
+                "name":"微云网盘",
+                "addr":"https://share.weiyun.com/a8ewJIqR"
+            }
+        ],
+        "mcbbs_links":[],
+        "size":"206342KB",
+        "mcbbs_size":"206321KB",
+        "time":"2026-11-18",
+        "era":2
     }
 ]
